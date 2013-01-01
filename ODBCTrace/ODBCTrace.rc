@@ -1,0 +1,44 @@
+#include "resource.h"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+
+#include "ODBCTrace.dlg"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,20,0,0
+ PRODUCTVERSION 1,20,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "Comments", "Distributed under GNU LGPL. See http://gnu.org/licenses/lgpl.html for details."
+            VALUE "CompanyName", "Jochen Neubeck"
+            VALUE "FileDescription", "ODBCTrace"
+            VALUE "FileVersion", "1, 10, 0, 0"
+            VALUE "InternalName", "ODBCTrace"
+            VALUE "LegalCopyright", "Jochen Neubeck"
+            VALUE "LegalTrademarks", ""
+            VALUE "OriginalFilename", "ODBCTrace.dll"
+            VALUE "PrivateBuild", ""
+            VALUE "ProductName", "ODBCTrace"
+            VALUE "ProductVersion", "1, 10, 0, 0"
+            VALUE "SpecialBuild", ""
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
+END

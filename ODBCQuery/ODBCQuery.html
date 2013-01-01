@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>ODBCQuery Sample HTML Script</TITLE>
+</HEAD>
+<script language='vbs'>
+Sub PbShowConnect_OnClick
+	external.Clear
+	external.Log external.rdoConnxn.Connect
+	external.LogStyle(3) = "fore:red,underline"
+	external.LogStyle(4) = "fore:green,bold"
+	external.LogStyle(5) = "fore:blue,italic,bold,size:12"
+	Execute external.LogStyle(3)
+	external.Log external.rdoConnxn.Connect
+	Execute external.LogStyle(4)
+	external.Log external.rdoConnxn.Connect
+	Execute external.LogStyle(5)
+	external.Log external.rdoConnxn.Connect
+End Sub
+</script>
+<BODY>
+<button id='PbShowConnect'>Show Connect String</button>
+</BODY>
+</HTML>

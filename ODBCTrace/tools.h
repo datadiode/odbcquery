@@ -1,0 +1,13 @@
+void NTAPI SetDlgCaption(HWND hWnd, LPCTSTR szAppName, LPCTSTR lpIcon);
+void NTAPI SetClipboardText(HWND, LPCTSTR);
+WORD NTAPI GetModState();
+
+union UNotify
+{
+	HWND hwnd;
+	NMHDR NMHDR;
+	ENLINK ENLINK;
+	MSGFILTER MSGFILTER;
+	REQRESIZE REQRESIZE;
+	SELCHANGE SELCHANGE;
+};

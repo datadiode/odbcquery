@@ -1,0 +1,1803 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: MSRDO20.DLL
+
+[
+  uuid(EE008642-64A8-11CE-920F-08002B369A33),
+  version(2.0),
+  helpstring("Microsoft Remote Data Object 2.0"),
+  helpfile("rdo98.chm"),
+  helpcontext(0x0004bc28)
+]
+library RDO
+{
+    // TLib :     // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("stdole2.tlb");
+
+	typedef float single;
+
+    // Forward declare all types defined in this typelib
+	coclass rdoResultset;
+	coclass rdoQuery;
+    interface _rdoEngine;
+    dispinterface rdoEngineEvents;
+    interface rdoError;
+    interface _rdoConnection;
+    dispinterface rdoConnectionEvents;
+    interface _rdoColumn;
+    dispinterface rdoColumnEvents;
+    interface rdoTable;
+    interface _rdoResultset;
+    dispinterface rdoResultsetEvents;
+    interface rdoPreparedStatement;
+    interface _rdoEnvironment;
+    dispinterface rdoEnvironmentEvents;
+    interface rdoParameter;
+    interface DualCollection;
+    interface rdoColumns;
+    interface rdoTables;
+    interface rdoConnections;
+    interface rdoParameters;
+    interface rdoResultsets;
+    interface rdoEnvironments;
+    interface rdoQueries;
+    interface rdoPreparedStatements;
+    interface rdoErrors;
+    interface IPrivColGetRows;
+    interface IPrivRsGetRows;
+
+    typedef [uuid(3EC2F116-AB40-11CE-9296-08002B369A33), helpstring("Prompt Constants"), helpcontext(0x0004bc29)]
+    enum {
+        rdDriverPrompt = 0,
+        rdDriverNoPrompt = 1,
+        rdDriverComplete = 2,
+        rdDriverCompleteRequired = 3
+    } PromptConstants;
+
+    typedef [uuid(B8F42591-AB49-11CE-9296-08002B369A33), helpstring("CursorDriver Constants"), helpcontext(0x0004bc2e)]
+    enum {
+        rdUseIfNeeded = 0,
+        rdUseOdbc = 1,
+        rdUseServer = 2,
+        rdUseClientBatch = 3,
+        rdUseNone = 4
+    } CursorDriverConstants;
+
+    typedef [uuid(B8F42593-AB49-11CE-9296-08002B369A33), helpstring("EditMode Constants"), helpcontext(0x0004bc34)]
+    enum {
+        rdEditNone = 0,
+        rdEditInProgress = 1,
+        rdEditAdd = 2
+    } EditModeConstants;
+
+    typedef [uuid(B8F42595-AB49-11CE-9296-08002B369A33), helpstring("LockType Constants"), helpcontext(0x0004bc38)]
+    enum {
+        rdConcurReadOnly = 1,
+        rdConcurLock = 2,
+        rdConcurRowVer = 3,
+        rdConcurValues = 4,
+        rdConcurBatch = 5
+    } LockTypeConstants;
+
+    typedef [uuid(B8F42596-AB49-11CE-9296-08002B369A33), helpstring("Options Constants"), helpcontext(0x0004bc3e)]
+    enum {
+        rdAsyncEnable = 32,
+        rdExecDirect = 64,
+        rdFetchLongColumns = 128,
+        rdBackgroundFetch = 256
+    } OptionConstants;
+
+    typedef [uuid(B8F42597-AB49-11CE-9296-08002B369A33), helpstring("Resultset Type Constants"), helpcontext(0x0004bc41)]
+    enum {
+        rdOpenForwardOnly = 0,
+        rdOpenKeyset = 1,
+        rdOpenDynamic = 2,
+        rdOpenStatic = 3
+    } ResultsetTypeConstants;
+
+    typedef [uuid(B8F4259B-AB49-11CE-9296-08002B369A33), helpstring("Attributes Constants"), helpcontext(0x0004bc46)]
+    enum {
+        rdFixedColumn = 1,
+        rdVariableColumn = 2,
+        rdAutoIncrColumn = 16,
+        rdUpdatableColumn = 32,
+        rdTimestampColumn = 64
+    } AttributeConstants;
+
+    typedef [uuid(B8F4259D-AB49-11CE-9296-08002B369A33), helpstring("Data Type Constants"), helpcontext(0x0004bc4c)]
+    enum {
+        rdTypeCHAR = 1,
+        rdTypeNUMERIC = 2,
+        rdTypeDECIMAL = 3,
+        rdTypeINTEGER = 4,
+        rdTypeSMALLINT = 5,
+        rdTypeFLOAT = 6,
+        rdTypeREAL = 7,
+        rdTypeDOUBLE = 8,
+        rdTypeDATE = 9,
+        rdTypeTIME = 10,
+        rdTypeTIMESTAMP = 11,
+        rdTypeVARCHAR = 12,
+        rdTypeLONGVARCHAR = 0xffffffff,
+        rdTypeBINARY = 0xfffffffe,
+        rdTypeVARBINARY = 0xfffffffd,
+        rdTypeLONGVARBINARY = 0xfffffffc,
+        rdTypeBIGINT = 0xfffffffb,
+        rdTypeTINYINT = 0xfffffffa,
+        rdTypeBIT = 0xfffffff9,
+        rdTypeWCHAR = 0xfffffff8,
+        rdTypeWVARCHAR = 0xfffffff7,
+        rdTypeWLONGVARCHAR = 0xfffffff6,
+        rdTypeGUID = 0xfffffff5
+    } DataTypeConstants;
+
+    typedef [uuid(B8F4259E-AB49-11CE-9296-08002B369A33), helpstring("Direction Constants"), helpcontext(0x0004bc60)]
+    enum {
+        rdParamInput = 0,
+        rdParamInputOutput = 1,
+        rdParamOutput = 2,
+        rdParamReturnValue = 3
+    } DirectionConstants;
+
+    typedef [uuid(B8F425A0-AB49-11CE-9296-08002B369A33), helpstring("rdoLocaleID  Constants"), helpcontext(0x0004baf5)]
+    enum {
+        rdLocaleEnglish = 1,
+        rdLocaleFrench = 2,
+        rdLocaleGerman = 3,
+        rdLocaleItalian = 4,
+        rdLocaleJapanese = 5,
+        rdLocaleSpanish = 6,
+        rdLocaleChinese = 7,
+        rdLocaleSimplifiedChinese = 8,
+        rdLocaleKorean = 9,
+        rdLocaleSystem = 0
+    } rdoLocaleIDConstants;
+
+    typedef [uuid(B8F425A3-AB49-11CE-9296-08002B369A33), helpstring("Query Type Constants"), helpcontext(0x0004bafe)]
+    enum {
+        rdQSelect = 0,
+        rdQAction = 1,
+        rdQProcedures = 2,
+        rdQCompound = 3
+    } QueryTypeConstants;
+
+    typedef [uuid(B8F425A4-AB49-11CE-9296-08002B369A33), helpstring("SQL Retcode Constants"), helpcontext(0x0004bb03)]
+    enum {
+        rdSQLSuccess = 0,
+        rdSQLSuccessWithInfo = 1,
+        rdSQLNoDataFound = 100,
+        rdSQLError = 0xffffffff,
+        rdSQLInvalidHandle = 0xfffffffe
+    } SQLRetcodeConstants;
+
+    typedef [uuid(B513C660-3643-11CF-A41B-00AA00B92C08), helpstring("Row Status Constants"), helpcontext(0x0004bb09)]
+    enum {
+        rdRowUnmodified = 0,
+        rdRowModified = 1,
+        rdRowNew = 2,
+        rdRowDeleted = 3,
+        rdRowDBDeleted = 4
+    } RowStatusConstants;
+
+    typedef [uuid(DAC898B3-A9FA-11CF-817E-00AA00A40C25), helpstring("Column Status Constants"), helpcontext(0x0004bb0f)]
+    enum {
+        rdColUnmodified = 0,
+        rdColModified = 1
+    } ColumnStatusConstants;
+
+    typedef [uuid(461DC4A0-374B-11CF-A41B-00AA00B92C08), helpstring("Update Operation Constants"), helpcontext(0x0004bb12)]
+    enum {
+        rdOperationUpdate = 0,
+        rdOperationDelIns = 1
+    } UpdateOperationConstants;
+
+    typedef [uuid(63D630B0-374C-11CF-A41B-00AA00B92C08), helpstring("Update Criteria Constants"), helpcontext(0x0004bb15)]
+    enum {
+        rdCriteriaKey = 0,
+        rdCriteriaAllCols = 1,
+        rdCriteriaUpdCols = 2,
+        rdCriteriaTimeStamp = 3
+    } UpdateCriteriaConstants;
+
+    typedef [uuid(F6DB0CBD-7BA4-11CF-8160-00AA00A40C25), helpstring("Update Return Code Constants"), helpcontext(0x0004bb1a)]
+    enum {
+        rdUpdateSuccessful = 0,
+        rdUpdateWithCollisions = 1,
+        rdUpdateFailed = 2,
+        rdUpdateNotHandled = 3
+    } UpdateReturnCodeConstants;
+
+    [
+      odl,
+      uuid(5E71F04B-551F-11CF-8152-00AA00A40C25),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _rdoEngine : IDispatch {
+        [id(0x00000001), propget, helpstring("Timeout value for connecting to a data source"), helpcontext(0x0004bb20)]
+        HRESULT rdoDefaultLoginTimeout([out, retval] long* Value);
+        [id(0x00000001), propput, helpstring("Timeout value for connecting to a data source"), helpcontext(0x0004bb20)]
+        HRESULT rdoDefaultLoginTimeout([in] long Value);
+        [id(0x00000002), propget, helpstring("Default user name assigned to any new rdoEnvironment"), helpcontext(0x0004bb21)]
+        HRESULT rdoDefaultUser([out, retval] BSTR* Value);
+        [id(0x00000002), propput, helpstring("Default user name assigned to any new rdoEnvironment"), helpcontext(0x0004bb21)]
+        HRESULT rdoDefaultUser([in] BSTR Value);
+        [id(0x00000003), propget, helpstring("Default password assigned to any new rdoEnvironment"), helpcontext(0x0004bb22)]
+        HRESULT rdoDefaultPassword([out, retval] BSTR* Value);
+        [id(0x00000003), propput, helpstring("Default password assigned to any new rdoEnvironment"), helpcontext(0x0004bb22)]
+        HRESULT rdoDefaultPassword([in] BSTR Value);
+        [id(00000000), propget, helpstring("Contains all active rdoEnvironment objects of the rdoEngine object"), helpcontext(0x0004bb23)]
+        HRESULT rdoEnvironments([out, retval] rdoEnvironments** pCollection);
+        [id(0x00000005), propget, helpstring("Contains all stored rdoError objects"), helpcontext(0x0004bb24)]
+        HRESULT rdoErrors([out, retval] rdoErrors** pCollection);
+        [id(0x00000006), propget, helpstring("Version of the RDO library associated with the object"), helpcontext(0x0004bb25)]
+        HRESULT rdoVersion([out, retval] BSTR* Value);
+        [id(0x00000007), propget, helpstring("Indicates where cursors are created"), helpcontext(0x0004bb26)]
+        HRESULT rdoDefaultCursorDriver([out, retval] CursorDriverConstants* Value);
+        [id(0x00000007), propput, helpstring("Indicates where cursors are created"), helpcontext(0x0004bb26)]
+        HRESULT rdoDefaultCursorDriver([in] CursorDriverConstants Value);
+        [id(0x00000008), propget, helpstring("Default Error Threshold for ODBC connections"), helpcontext(0x0004bb27)]
+        HRESULT rdoDefaultErrorThreshold([out, retval] long* Value);
+        [id(0x00000008), propput, helpstring("Default Error Threshold for ODBC connections"), helpcontext(0x0004bb27)]
+        HRESULT rdoDefaultErrorThreshold([in] long Value);
+        [id(0x00000009), helpstring("Registers a database with ODBC"), helpcontext(0x0004bb28)]
+        HRESULT rdoRegisterDataSource(
+                        [in] BSTR DSN, 
+                        [in] BSTR Driver, 
+                        [in] VARIANT_BOOL Silent, 
+                        [in] BSTR Attributes);
+        [id(0x0000000a), helpstring("Creates a new rdoEnvironment object"), helpcontext(0x0004bb29)]
+        HRESULT rdoCreateEnvironment(
+                        [in] BSTR Name, 
+                        [in] BSTR User, 
+                        [in] BSTR Password, 
+                        [out, retval] _rdoEnvironment** pRetval);
+        [id(0x0000000b), propget, helpstring("Locale ID used to load resources"), helpcontext(0x0004bb2a)]
+        HRESULT rdoLocaleID([out, retval] rdoLocaleIDConstants* Value);
+        [id(0x0000000b), propput, helpstring("Locale ID used to load resources"), helpcontext(0x0004bb2a)]
+        HRESULT rdoLocaleID([in] rdoLocaleIDConstants Value);
+        [id(0x00000020), propget, restricted, hidden, helpstring("Default user name assigned to any new rdoEnvironment"), helpcontext(0x0004bb21)]
+        HRESULT rdoDefaultUserA([out, retval] BSTR* Value);
+        [id(0x00000020), propput, restricted, hidden, helpstring("Default user name assigned to any new rdoEnvironment"), helpcontext(0x0004bb21)]
+        HRESULT rdoDefaultUserA([in] BSTR Value);
+        [id(0x00000021), propget, restricted, hidden, helpstring("Default password assigned to any new rdoEnvironment"), helpcontext(0x0004bb22)]
+        HRESULT rdoDefaultPasswordA([out, retval] BSTR* Value);
+        [id(0x00000021), propput, restricted, hidden, helpstring("Default password assigned to any new rdoEnvironment"), helpcontext(0x0004bb22)]
+        HRESULT rdoDefaultPasswordA([in] BSTR Value);
+        [id(0x00000024), propget, restricted, hidden, helpstring("Version of the RDO library associated with the object"), helpcontext(0x0004bb25)]
+        HRESULT rdoVersionA([out, retval] BSTR* Value);
+        [id(0x00000027), restricted, hidden, helpstring("Registers a database with ODBC"), helpcontext(0x0004bb28)]
+        HRESULT rdoRegisterDataSourceA(
+                        [in] BSTR DSN, 
+                        [in] BSTR Driver, 
+                        [in] VARIANT_BOOL Silent, 
+                        [in] BSTR Attributes);
+        [id(0x00000028), restricted, hidden, helpstring("Creates a new rdoEnvironment object"), helpcontext(0x0004bb29)]
+        HRESULT rdoCreateEnvironmentA(
+                        [in] BSTR Name, 
+                        [in] BSTR User, 
+                        [in] BSTR Password, 
+                        [out, retval] _rdoEnvironment** pRetval);
+        [id(0x0000002d), restricted, hidden]
+        HRESULT SetGlobalDebugMode(
+                        [in] IUnknown* pDebugger, 
+                        [in] VARIANT_BOOL fDebuggingOn);
+        [id(0x0000002e), restricted, hidden]
+        HRESULT IsGlobalDebugMode([out, retval] VARIANT_BOOL* fDebuggingOn);
+    };
+
+    [
+      uuid(EE008643-64A8-11CE-920F-08002B369A33),
+      helpstring("The Remote Data Object Engine object"),
+      helpcontext(0x0004bb1f),
+      hidden
+    ]
+    dispinterface rdoEngineEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("SQL error object are added to rdoErros collection"), helpcontext(0x0004bb2b)]
+            void InfoMessage();
+    };
+
+    [
+      uuid(9A8831F0-A263-11D1-8DCF-00A0C90FFFC2),
+      helpstring("The Remote Data Object Engine object"),
+      helpcontext(0x0004bb1f),
+      appobject,
+      licensed
+    ]
+    coclass rdoEngine {
+        [default] interface _rdoEngine;
+        [default, source] dispinterface rdoEngineEvents;
+    };
+
+    [
+      odl,
+      uuid(B541C034-63BC-11CE-920C-08002B369A33),
+      helpstring("Contains details about remote data access errors"),
+      helpcontext(0x0004bb2c),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoError : IDispatch {
+        [id(0x00000001), propget, helpstring("A numeric value specifying a native error"), helpcontext(0x0004bb2d)]
+        HRESULT Number([out, retval] long* Value);
+        [id(0x00000002), propget, helpstring("A value indicating the source of a remote data access error"), helpcontext(0x0004bb2e)]
+        HRESULT Source([out, retval] BSTR* Value);
+        [id(00000000), propget, helpstring("A descriptive string associated with an error"), helpcontext(0x0004bb2f)]
+        HRESULT Description([out, retval] BSTR* Value);
+        [id(0x00000004), propget, helpstring("A Windows Help file topic context ID"), helpcontext(0x0004bb30)]
+        HRESULT HelpContext([out, retval] long* Value);
+        [id(0x00000005), propget, helpstring("Fully qualified path to the Windows Help file"), helpcontext(0x0004bb31)]
+        HRESULT HelpFile([out, retval] BSTR* Value);
+        [id(0x00000006), propget, helpstring("The type of error as defined by the X/Open and SQL Access Group SQL"), helpcontext(0x0004bb32)]
+        HRESULT SQLState([out, retval] BSTR* Value);
+        [id(0x00000007), propget, helpstring("Error return code from the most recent RDO operation"), helpcontext(0x0004bb33)]
+        HRESULT SQLRetcode([out, retval] long* Value);
+        [id(0x00000016), propget, restricted, hidden, helpstring("A value indicating the source of a remote data access error"), helpcontext(0x0004bb2e)]
+        HRESULT SourceA([out, retval] BSTR* Value);
+        [id(0x00000014), propget, restricted, hidden, helpstring("A descriptive string associated with an error"), helpcontext(0x0004bb2f)]
+        HRESULT DescriptionA([out, retval] BSTR* Value);
+        [id(0x00000019), propget, restricted, hidden, helpstring("Fully qualified path to the Windows Help file"), helpcontext(0x0004bb31)]
+        HRESULT HelpFileA([out, retval] BSTR* Value);
+        [id(0x0000001a), propget, restricted, hidden, helpstring("The type of error as defined by the X/Open and SQL Access Group SQL"), helpcontext(0x0004bb32)]
+        HRESULT SQLStateA([out, retval] BSTR* Value);
+    };
+
+    [
+      odl,
+      uuid(5E71F04D-551F-11CF-8152-00AA00A40C25),
+      helpstring("An open connection to a remote data source"),
+      helpcontext(0x0004bb34),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface _rdoConnection : IDispatch {
+        [id(0x00000001), propget, helpstring("Timeout value for query execution"), helpcontext(0x0004bb35)]
+        HRESULT QueryTimeout([out, retval] long* Value);
+        [id(0x00000001), propput, helpstring("Timeout value for query execution"), helpcontext(0x0004bb35)]
+        HRESULT QueryTimeout([in] long Value);
+        [id(0x00000002), propget, helpstring("Contains all rdoTable objects in a database"), helpcontext(0x0004bb36)]
+        HRESULT rdoTables([out, retval] rdoTables** pRetval);
+        [id(0x00000003), propget, hidden]
+        HRESULT rdoPreparedStatements([out, retval] rdoPreparedStatements** pRetval);
+        [id(00000000), propget, helpstring("Contains all open rdoResultset objects in an rdoConnection"), helpcontext(0x0004bb38)]
+        HRESULT rdoResultsets([out, retval] rdoResultsets** pRetval);
+        [id(0x00000005), propget, helpstring("Provides information about the source of an open rdoConnection"), helpcontext(0x0004bb39)]
+        HRESULT Connect([out, retval] BSTR* Value);
+        [id(0x00000005), propput, helpstring("Provides information about the source of an open rdoConnection"), helpcontext(0x0004bb39)]
+        HRESULT Connect([in] BSTR Value);
+        [id(0x00000006), propget, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb3a)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000006), propput, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb3a)]
+        HRESULT Name([in] BSTR Value);
+        [id(0x00000007), propget, helpstring("The number of rows affected"), helpcontext(0x0004bb3b)]
+        HRESULT RowsAffected([out, retval] long* Value);
+        [id(0x00000008), propget, helpstring("Indicates whether a Cursor supports transactions"), helpcontext(0x0004bb3c)]
+        HRESULT Transactions([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000009), propget, helpstring("Indicates whether a Cursor is updatable"), helpcontext(0x0004bb3d)]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000000a), propget, helpstring("ODBC driver version"), helpcontext(0x0004bb3e)]
+        HRESULT Version([out, retval] BSTR* Value);
+        [id(0x00000012), propget, helpstring("The ODBC connection handle"), helpcontext(0x0004bb3f)]
+        HRESULT hDbc([out, retval] long* Value);
+        [id(0x00000013), propget, helpstring("Indicates whether an asynchronous query is still executing"), helpcontext(0x0004bb40)]
+        HRESULT StillExecuting([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000014), propget, helpstring("Polling interval for asynchronous queries"), helpcontext(0x0004bb41)]
+        HRESULT AsyncCheckInterval([out, retval] long* Value);
+        [id(0x00000014), propput, helpstring("Polling interval for asynchronous queries"), helpcontext(0x0004bb41)]
+        HRESULT AsyncCheckInterval([in] long Value);
+        [id(0x0000000b), helpstring("Close the connections"), helpcontext(0x0004bb42)]
+        HRESULT Close();
+        [id(0x0000000c), helpstring("Executes a query or SQL statement on an object"), helpcontext(0x0004bb43)]
+        HRESULT Execute(
+                        [in] BSTR Source, 
+                        [in, optional] VARIANT Options);
+        [id(0x0000000d), helpstring("Creates a new rdoResultset object"), helpcontext(0x0004bb44)]
+        HRESULT OpenResultset(
+                        [in] BSTR Name, 
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT LockType, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] rdoResultset** pRetval);
+        [id(0x0000000e), hidden]
+        HRESULT CreatePreparedStatement(
+                        [in] BSTR Name, 
+                        [in] VARIANT SqlString, 
+                        [out, retval] rdoPreparedStatement** pRetval);
+        [id(0x0000000f), helpstring("Begins a new transaction"), helpcontext(0x0004bb45)]
+        HRESULT BeginTrans();
+        [id(0x00000010), helpstring("Commits any outstanding transactions"), helpcontext(0x0004bb46)]
+        HRESULT CommitTrans();
+        [id(0x00000011), helpstring("Rolls back any outstanding transactions"), helpcontext(0x0004bb47)]
+        HRESULT RollbackTrans();
+        [id(0x00000015), helpstring("Cancels an asynchronous query or pending results against the rdoResultset object"), helpcontext(0x0004bb48)]
+        HRESULT Cancel();
+        [id(0x00000016), propget, helpstring("The last resultset returned by a call on the connection to a prepared statement"), helpcontext(0x0004bb49)]
+        HRESULT LastQueryResults([out, retval] rdoResultset** pRetval);
+        [id(0x00000017), propget, helpstring("Determines where the cursor is to be created"), helpcontext(0x0004bb4a)]
+        HRESULT CursorDriver([out, retval] CursorDriverConstants* Value);
+        [id(0x00000017), propput, helpstring("Determines where the cursor is to be created"), helpcontext(0x0004bb4a)]
+        HRESULT CursorDriver([in] CursorDriverConstants Value);
+        [id(0x00000018), propget, helpstring("Login timeout in seconds"), helpcontext(0x0004bb4b)]
+        HRESULT LoginTimeout([out, retval] long* Value);
+        [id(0x00000018), propput, helpstring("Login timeout in seconds"), helpcontext(0x0004bb4b)]
+        HRESULT LoginTimeout([in] long Value);
+        [id(0x00000019), helpstring("Connect to data source"), helpcontext(0x0004bb4c)]
+        HRESULT EstablishConnection(
+                        [in, optional] VARIANT Prompt, 
+                        [in, optional] VARIANT Readonly, 
+                        [in, optional] VARIANT Options);
+        [id(0x0000001a), propget, helpstring("Still connecting to data source."), helpcontext(0x0004bb4d)]
+        HRESULT StillConnecting([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000001e), helpstring("Creates a new rdoQuery object"), helpcontext(0x0004bb4e)]
+        HRESULT CreateQuery(
+                        [in] BSTR Name, 
+                        [in] VARIANT SqlString, 
+                        [out, retval] rdoQuery** pRetval);
+        [id(0x0000001f), propget, helpstring("rdoQueries collection"), helpcontext(0x0004bb4f)]
+        HRESULT rdoQueries([out, retval] rdoQueries** pRetval);
+        [id(0x00000020), propget, helpstring("Determines the pathname of the ODBC trace file"), helpcontext(0x0004bb50)]
+        HRESULT LogMessages([out, retval] BSTR* Value);
+        [id(0x00000020), propput, helpstring("Determines the pathname of the ODBC trace file"), helpcontext(0x0004bb50)]
+        HRESULT LogMessages([in] BSTR Value);
+        [id(0x00000064), propget, restricted, hidden, helpstring("*** For internal use only ***")]
+        HRESULT Owner([out, retval] _rdoEnvironment** pRet);
+        [id(0x0000002d), propget, restricted, hidden, helpstring("Provides information about the source of an open rdoConnection"), helpcontext(0x0004bb39)]
+        HRESULT ConnectA([out, retval] BSTR* Value);
+        [id(0x0000002e), propget, restricted, hidden, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb3a)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000032), propget, restricted, hidden, helpstring("ODBC driver version"), helpcontext(0x0004bb3e)]
+        HRESULT VersionA([out, retval] BSTR* Value);
+        [id(0x00000034), restricted, hidden, helpstring("Executes a query or SQL statement on an object"), helpcontext(0x0004bb43)]
+        HRESULT ExecuteA(
+                        [in] BSTR Source, 
+                        [in, optional] VARIANT Options);
+        [id(0x00000035), restricted, hidden, helpstring("Creates a new rdoResultset object"), helpcontext(0x0004bb44)]
+        HRESULT OpenResultsetA(
+                        [in] BSTR Name, 
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT LockType, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] rdoResultset** pRetval);
+        [id(0x00000036), restricted, hidden, helpstring("Creates a new rdoQuery object"), helpcontext(0x0004bb4e)]
+        HRESULT CreateQueryA(
+                        [in] BSTR Name, 
+                        [in] VARIANT SqlString, 
+                        [out, retval] rdoQuery** pRetval);
+        [id(0x00000037), restricted, hidden]
+        HRESULT DaoOpenResultsetA(
+                        [in] BSTR Name, 
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT LockType, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] rdoResultset** pRetval);
+    };
+
+    [
+      uuid(8B39DFBD-3647-11CF-814A-00AA00A40C25),
+      hidden
+    ]
+    dispinterface rdoConnectionEvents {
+        properties:
+        methods:
+            [id(0x00000002), helpstring("Fired after a connection is made to the data source"), helpcontext(0x0004bb54)]
+            void Connect(VARIANT_BOOL ErrorOccurred);
+            [id(0x00000001), helpstring("Fired before the call to SQLDriverConnect"), helpcontext(0x0004bb55)]
+            void BeforeConnect(
+                            BSTR* ConnectString, 
+                            VARIANT* Prompt);
+            [id(0x00000003), helpstring("Fired after a connection has been closed"), helpcontext(0x0004bb56)]
+            void Disconnect();
+            [id(0x00000004), helpstring("Fired after an asynchronous query has completed"), helpcontext(0x0004bb57)]
+            void QueryComplete(
+                            rdoQuery* Query, 
+                            VARIANT_BOOL ErrorOccurred);
+            [id(0x00000005), helpstring("Fired after the query execution time has exceeded the queryTimeout value"), helpcontext(0x0004bb58)]
+            void QueryTimeout(
+                            rdoQuery* Query, 
+                            VARIANT_BOOL* Cancel);
+            [id(0x00000006), helpstring("Fired before the query is run."), helpcontext(0x0004bbe7)]
+            void WillExecute(
+                            rdoQuery* Query, 
+                            VARIANT_BOOL* Cancel);
+    };
+
+    [
+      uuid(9A8831F1-A263-11D1-8DCF-00A0C90FFFC2),
+      helpstring("An open connection to a remote data source"),
+      helpcontext(0x0004bb34),
+      licensed
+    ]
+    coclass rdoConnection {
+        [default] interface _rdoConnection;
+        [default, source] dispinterface rdoConnectionEvents;
+    };
+
+    [
+      odl,
+      uuid(5E71F04E-551F-11CF-8152-00AA00A40C25),
+      helpstring("A column of data with a common data type"),
+      helpcontext(0x0004bb59),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _rdoColumn : IDispatch {
+        [id(00000000), propget, helpstring("Determines the value of an object"), helpcontext(0x0004bb5b)]
+        HRESULT Value([out, retval] VARIANT* Value);
+        [id(00000000), propput, helpstring("Determines the value of an object"), helpcontext(0x0004bb5b)]
+        HRESULT Value([in] VARIANT Value);
+        [id(0x00000001), propget, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bb5c)]
+        HRESULT Type([out, retval] DataTypeConstants* Value);
+        [id(0x00000002), propget, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bb5e)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000002), propput, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bb5e)]
+        HRESULT Name([in] BSTR Value);
+        [id(0x00000003), propget, helpstring("Indicates the size of an rdoColumn object"), helpcontext(0x0004bb60)]
+        HRESULT Size([out, retval] long* Value);
+        [id(0x00000003), propput, helpstring("Indicates the size of an rdoColumn object"), helpcontext(0x0004bb60)]
+        HRESULT Size([in] long Value);
+        [id(0x00000004), propget, helpstring("Indicates if a zero-length string is valid for the Value property"), helpcontext(0x0004bb62)]
+        HRESULT AllowZeroLength([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000004), propput, helpstring("Indicates if a zero-length string is valid for the Value property"), helpcontext(0x0004bb62)]
+        HRESULT AllowZeroLength([in] VARIANT_BOOL Value);
+        [id(0x00000005), propget, helpstring("Indicates characteristics of an rdoColumn object"), helpcontext(0x0004bb63)]
+        HRESULT Attributes([out, retval] AttributeConstants* Value);
+        [id(0x00000006), propget, helpstring("Indicates whether changes can be made to a remote data object"), helpcontext(0x0004bb65)]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000006), propput, helpstring("Indicates whether changes can be made to a remote data object"), helpcontext(0x0004bb65)]
+        HRESULT Updatable([in] VARIANT_BOOL Value);
+        [id(0x00000007), propget, helpstring("Relative position of an rdoColumn object within the collection"), helpcontext(0x0004bb66)]
+        HRESULT OrdinalPosition([out, retval] short* Value);
+        [id(0x00000008), propget, helpstring("Indicates whether an rdoColumn requires a non-Null value"), helpcontext(0x0004bb67)]
+        HRESULT Required([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000009), propget, helpstring("Indicates the rdoColumn object data's original source column name"), helpcontext(0x0004bb69)]
+        HRESULT SourceColumn([out, retval] BSTR* Value);
+        [id(0x00000009), propput, helpstring("Indicates the rdoColumn object data's original source column name"), helpcontext(0x0004bb69)]
+        HRESULT SourceColumn([in] BSTR Value);
+        [id(0x0000000a), propget, helpstring("Indicates the rdoColumn object data's original source table name"), helpcontext(0x0004bb6b)]
+        HRESULT SourceTable([out, retval] BSTR* Value);
+        [id(0x0000000a), propput, helpstring("Indicates the rdoColumn object data's original source table name"), helpcontext(0x0004bb6b)]
+        HRESULT SourceTable([in] BSTR Value);
+        [id(0x0000000b), propget, helpstring("Indicates if data must be accessed using the GetChunk method"), helpcontext(0x0004bb6c)]
+        HRESULT ChunkRequired([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000000c), helpstring("Appends data from a string expression to an rdoColumn object"), helpcontext(0x0004bb6d)]
+        HRESULT AppendChunk([in] VARIANT Chunk);
+        [id(0x0000000d), helpstring("Returns the contents of an rdoColumn object"), helpcontext(0x0004bb6e)]
+        HRESULT GetChunk(
+                        [in] long Size, 
+                        [out, retval] VARIANT* pRetval);
+        [id(0x0000000e), helpstring("Returns the number of bytes in an rdoColumn object"), helpcontext(0x0004bb6f)]
+        HRESULT ColumnSize([out, retval] long* pRetval);
+        [id(0x0000000f), propget, helpstring("Returns a value currently in the database that is newer than the Value property as determined by an optimistic batch update conflict."), helpcontext(0x0004bb70)]
+        HRESULT BatchConflictValue([out, retval] VARIANT* Value);
+        [id(0x00000010), propget, helpstring("Returns the value of the column as first fetched from the database."), helpcontext(0x0004bb71)]
+        HRESULT OriginalValue([out, retval] VARIANT* Value);
+        [id(0x00000011), propget, helpstring("Returns/Sets the column buffer status"), helpcontext(0x0004bb72)]
+        HRESULT Status([out, retval] ColumnStatusConstants* Value);
+        [id(0x00000011), propput, helpstring("Returns/Sets the column buffer status"), helpcontext(0x0004bb72)]
+        HRESULT Status([in] ColumnStatusConstants Value);
+        [id(0x00000012), propget, helpstring("Returns/sets a value that specifies if this column is part of the primary key."), helpcontext(0x0004bb73)]
+        HRESULT KeyColumn([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000012), propput, helpstring("Returns/sets a value that specifies if this column is part of the primary key."), helpcontext(0x0004bb73)]
+        HRESULT KeyColumn([in] VARIANT_BOOL Value);
+        [id(0x00000064), propget, restricted, hidden]
+        HRESULT VariantType([out, retval] long* Value);
+        [id(0x00000065), propget, restricted, hidden]
+        HRESULT CSize([out, retval] long* Value);
+        [id(0x0000001e), propget, restricted, hidden, helpstring("Determines the value of an object"), helpcontext(0x0004bb5b)]
+        HRESULT ValueA([out, retval] VARIANT* Value);
+        [id(0x0000001e), propput, restricted, hidden, helpstring("Determines the value of an object"), helpcontext(0x0004bb5b)]
+        HRESULT ValueA([in] VARIANT Value);
+        [id(0x00000020), propget, restricted, hidden, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bb5e)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000027), propget, restricted, hidden, helpstring("Indicates the rdoColumn object data's original source column name"), helpcontext(0x0004bb69)]
+        HRESULT SourceColumnA([out, retval] BSTR* Value);
+        [id(0x00000027), propput, restricted, hidden, helpstring("Indicates the rdoColumn object data's original source column name"), helpcontext(0x0004bb69)]
+        HRESULT SourceColumnA([in] BSTR Value);
+        [id(0x00000028), propget, restricted, hidden, helpstring("Indicates the rdoColumn object data's original source table name"), helpcontext(0x0004bb6b)]
+        HRESULT SourceTableA([out, retval] BSTR* Value);
+        [id(0x00000028), propput, restricted, hidden, helpstring("Indicates the rdoColumn object data's original source table name"), helpcontext(0x0004bb6b)]
+        HRESULT SourceTableA([in] BSTR Value);
+        [id(0x0000002a), restricted, hidden, helpstring("Appends data from a string expression to an rdoColumn object"), helpcontext(0x0004bb6d)]
+        HRESULT AppendChunkA([in] VARIANT Chunk);
+        [id(0x0000002b), restricted, hidden, helpstring("Returns the contents of an rdoColumn object"), helpcontext(0x0004bb6e)]
+        HRESULT GetChunkA(
+                        [in] long Size, 
+                        [out, retval] VARIANT* pRetval);
+        [id(0x60020027), propget, restricted, hidden]
+        HRESULT FoxAttributes([out, retval] long* pAttrib);
+        [id(0x60020028), propget, restricted, hidden]
+        HRESULT FoxSourceTable([out, retval] BSTR* pSrcTable);
+        [id(0x60020029), propget, restricted, hidden]
+        HRESULT FoxType([out, retval] short* pType);
+        [id(0x6002002a), propget, restricted, hidden]
+        HRESULT FoxPrecision([out, retval] long* pPrecision);
+        [id(0x6002002b), propget, restricted, hidden]
+        HRESULT FoxScale([out, retval] short* pScale);
+        [id(0x6002002c), propget, restricted, hidden]
+        HRESULT FoxMoney([out, retval] VARIANT_BOOL* pMoney);
+        [id(0x6002002d), propget, restricted, hidden]
+        HRESULT FoxAllowZeroLength([out, retval] VARIANT_BOOL* pAllowZeroLength);
+        [id(0x6002002e), propget, restricted, hidden]
+        HRESULT FoxSize([out, retval] long* pSize);
+        [id(0x6002002f), propget, restricted, hidden]
+        HRESULT FoxOrdinalPosition([out, retval] short* pOrdinalPosition);
+        [id(0x0000002d), propget, restricted, hidden]
+        HRESULT BatchConflictValueA([out, retval] VARIANT* Value);
+        [id(0x0000002e), propget, restricted, hidden]
+        HRESULT OriginalValueA([out, retval] VARIANT* Value);
+    };
+
+    [
+      uuid(8B39DFC0-3647-11CF-814A-00AA00A40C25),
+      hidden
+    ]
+    dispinterface rdoColumnEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("Fired when the value of the column has changed"), helpcontext(0x0004bb74)]
+            void DataChanged();
+            [id(0x00000002), helpstring("Fired before data is changed in the column"), helpcontext(0x0004bb75)]
+            void WillChangeData(
+                            VARIANT* newvalue, 
+                            VARIANT_BOOL* Cancel);
+    };
+
+    [
+      uuid(5EBB68F3-3BF1-11CF-814C-00AA00A40C25),
+      helpstring("A column of data with a common data type"),
+      helpcontext(0x0004bb59),
+      noncreatable,
+      licensed
+    ]
+    coclass rdoColumn {
+        [default] interface _rdoColumn;
+        [default, source] dispinterface rdoColumnEvents;
+    };
+
+    [
+      odl,
+      uuid(B541C03D-63BC-11CE-920C-08002B369A33),
+      helpstring("The stored definition of a base table or SQL view"),
+      helpcontext(0x0004bb76),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoTable : IDispatch {
+        [id(00000000), propget, helpstring("Contains stored rdoColumn objects"), helpcontext(0x0004bb77)]
+        HRESULT rdoColumns([out, retval] rdoColumns** pRetval);
+        [id(0x00000002), propget, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bb78)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000003), propget, helpstring("Indicates whether changes can be made to a remote data object"), helpcontext(0x0004bb79)]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000004), propget, helpstring("Indicates the number of rows accessed in an rdoResultset object"), helpcontext(0x0004bb7a)]
+        HRESULT RowCount([out, retval] long* Value);
+        [id(0x00000005), propget, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bb7b)]
+        HRESULT Type([out, retval] BSTR* Value);
+        [id(0x00000006), helpstring("Creates a new rdoResultset object"), helpcontext(0x0004bb7c)]
+        HRESULT OpenResultset(
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT LockType, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] rdoResultset** pRetval);
+        [id(0x00000016), propget, restricted, hidden, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bb78)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000019), propget, restricted, hidden, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bb7b)]
+        HRESULT TypeA([out, retval] BSTR* Value);
+    };
+
+    [
+      odl,
+      uuid(5E71F04F-551F-11CF-8152-00AA00A40C25),
+      helpstring("The rows resulting from a query"),
+      helpcontext(0x0004bb7d),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _rdoResultset : IDispatch {
+        [id(0x00000001), propget, helpstring("Determines a bookmark that uniquely identifies the current row"), helpcontext(0x0004bb7f)]
+        HRESULT Bookmark([out, retval] VARIANT* Value);
+        [id(0x00000001), propput, helpstring("Determines a bookmark that uniquely identifies the current row"), helpcontext(0x0004bb7f)]
+        HRESULT Bookmark([in] VARIANT Value);
+        [id(00000000), propget, helpstring("Contains stored rdoColumn objects"), helpcontext(0x0004bb80)]
+        HRESULT rdoColumns([out, retval] rdoColumns** pRetval);
+        [id(0x00000003), propget, helpstring("Indicates whether the current row is before the first row"), helpcontext(0x0004bb81)]
+        HRESULT BOF([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000004), propget, helpstring("Indicates whether an rdoResultset object supports bookmarks"), helpcontext(0x0004bb82)]
+        HRESULT Bookmarkable([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000005), propget, helpstring("Indicates whether the current row is after the last row"), helpcontext(0x0004bb83)]
+        HRESULT EOF([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000006), propget, helpstring("Indicates the locking in effect during editing"), helpcontext(0x0004bb84)]
+        HRESULT LockEdits([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000007), propget, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb86)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000007), propput, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb86)]
+        HRESULT Name([in] BSTR Value);
+        [id(0x00000009), propget, helpstring("Indicates whether an object supports transaction operations"), helpcontext(0x0004bb87)]
+        HRESULT Transactions([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000000b), propget, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bb88)]
+        HRESULT Type([out, retval] ResultsetTypeConstants* Value);
+        [id(0x0000000c), propget, helpstring("Indicates the number of rows available in an rdoResultset object"), helpcontext(0x0004bb89)]
+        HRESULT RowCount([out, retval] long* Value);
+        [id(0x0000000d), propget, helpstring("Indicates whether a remote data object can be changed"), helpcontext(0x0004bb8a)]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000000e), propget, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bb8b)]
+        HRESULT Restartable([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000000f), propget, helpstring("Indicates the editing state for the current row"), helpcontext(0x0004bb8c)]
+        HRESULT EditMode([out, retval] long* Value);
+        [id(0x0000000a), propget, helpstring("Determines the current row's location in the rdoResultset object"), helpcontext(0x0004bb8e)]
+        HRESULT PercentPosition([out, retval] single* Value);
+        [id(0x0000000a), propput, helpstring("Determines the current row's location in the rdoResultset object"), helpcontext(0x0004bb8e)]
+        HRESULT PercentPosition([in] single Value);
+        [id(0x0000001f), propget, helpstring("Determines the ODBC statement handle"), helpcontext(0x0004bb8f)]
+        HRESULT hStmt([out, retval] long* Value);
+        [id(0x00000020), propget, helpstring("Determines the absolute row number of an rdoResultset object's current row"), helpcontext(0x0004bb93)]
+        HRESULT AbsolutePosition([out, retval] long* Value);
+        [id(0x00000020), propput, helpstring("Determines the absolute row number of an rdoResultset object's current row"), helpcontext(0x0004bb93)]
+        HRESULT AbsolutePosition([in] long Value);
+        [id(0x00000021), propget, helpstring("Indicates whether an asynchronous query is still executing"), helpcontext(0x0004bb94)]
+        HRESULT StillExecuting([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000022), propget, helpstring("Returns the bookmark of the last row modified"), helpcontext(0x0004bb95)]
+        HRESULT LastModified([out, retval] VARIANT* Value);
+        [id(0x00000029), propget, helpstring("Number of records in Batch Update"), helpcontext(0x0004bb96)]
+        HRESULT BatchSize([out, retval] long* Value);
+        [id(0x00000029), propput, helpstring("Number of records in Batch Update"), helpcontext(0x0004bb96)]
+        HRESULT BatchSize([in] long Value);
+        [id(0x0000002a), propget, helpstring("Returns/sets a value that specifies if the optimistic batch update should use an Update statement or a Delete followed by an Insert."), helpcontext(0x0004bb97)]
+        HRESULT UpdateOperation([out, retval] short* Value);
+        [id(0x0000002a), propput, helpstring("Returns/sets a value that specifies if the optimistic batch update should use an Update statement or a Delete followed by an Insert."), helpcontext(0x0004bb97)]
+        HRESULT UpdateOperation([in] short Value);
+        [id(0x0000002b), propget, helpstring("Returns/sets a value that specifies how the WHERE clause is constructed for each row during an optimistic batch update operation."), helpcontext(0x0004bb9a)]
+        HRESULT UpdateCriteria([out, retval] short* Value);
+        [id(0x0000002b), propput, helpstring("Returns/sets a value that specifies how the WHERE clause is constructed for each row during an optimistic batch update operation."), helpcontext(0x0004bb9a)]
+        HRESULT UpdateCriteria([in] short Value);
+        [id(0x00000011), helpstring("Initializes copy buffer for a new row"), helpcontext(0x0004bb9b)]
+        HRESULT AddNew();
+        [id(0x00000012), helpstring("Closes an open remote data object"), helpcontext(0x0004bb9c)]
+        HRESULT Close();
+        [id(0x00000013), helpstring("Deletes the current row"), helpcontext(0x0004bb9d)]
+        HRESULT Delete();
+        [id(0x00000014), helpstring("Copies the current row to the copy buffer for editing"), helpcontext(0x0004bb9e)]
+        HRESULT Edit();
+        [id(0x00000015), helpstring("Moves the current row pointer to the first row in the result set"), helpcontext(0x0004bb9f)]
+        HRESULT MoveFirst();
+        [id(0x00000016), helpstring("Moves the current row pointer to the last row in the result set"), helpcontext(0x0004bba0)]
+        HRESULT MoveLast([in, optional] VARIANT Options);
+        [id(0x00000017), helpstring("Moves the current row pointer to the next row in the result set"), helpcontext(0x0004bba1)]
+        HRESULT MoveNext();
+        [id(0x0000001c), helpstring("Moves the current row pointer to the previous row in the result set"), helpcontext(0x0004bba2)]
+        HRESULT MovePrevious();
+        [id(0x00000019), helpstring("Saves the copy buffer to the database"), helpcontext(0x0004bba3)]
+        HRESULT Update();
+        [id(0x0000001a), helpstring("Re-executes the query on which the rdoResultset object is based"), helpcontext(0x0004bba4)]
+        HRESULT Requery([in, optional] VARIANT Options);
+        [id(0x0000001b), helpstring("Repositions the current row in an rdoResultset object"), helpcontext(0x0004bba5)]
+        HRESULT Move(
+                        [in] long Rows, 
+                        [in, optional] VARIANT Start);
+        [id(0x00000018), helpstring("Discards the current rdoResultset and indicates if an additional result set is available"), helpcontext(0x0004bba6)]
+        HRESULT MoreResults([out, retval] VARIANT_BOOL* pRetval);
+        [id(0x0000001d), helpstring("Cancels a query running in asynchronous mode or cancels pending results"), helpcontext(0x0004bba8)]
+        HRESULT Cancel();
+        [id(0x0000001e), helpstring("Cancels pending updates"), helpcontext(0x0004bba9)]
+        HRESULT CancelUpdate();
+        [id(0x00000023), helpstring("Retrieves multiple rows into an array"), helpcontext(0x0004bbaa)]
+        HRESULT GetRows(
+                        [in] VARIANT NumRows, 
+                        [out, retval] VARIANT* pReturnValue);
+        [id(0x0000002c), helpstring("Performs a batched optimistic update."), helpcontext(0x0004bbab)]
+        HRESULT BatchUpdate(
+                        [in, optional] VARIANT SingleRow, 
+                        [in, optional] VARIANT Force);
+        [id(0x0000002d), helpstring("Cancels all uncommitted changes in the local cursor (used in batch mode)."), helpcontext(0x0004bbac)]
+        HRESULT CancelBatch([in, optional] VARIANT SingleRow);
+        [id(0x00000024), propget, helpstring("Returns/Sets the parent connection object."), helpcontext(0x0004bbad)]
+        HRESULT ActiveConnection([out, retval] _rdoConnection** pRet);
+        [id(0x00000024), propputref, helpstring("Returns/Sets the parent connection object."), helpcontext(0x0004bbad)]
+        HRESULT ActiveConnection([in] _rdoConnection* pRet);
+        [id(0x00000025), propget, helpstring("Number of collision rows"), helpcontext(0x0004bbae)]
+        HRESULT BatchCollisionCount([out, retval] long* Value);
+        [id(0x00000026), propget, helpstring("Array of collision rows"), helpcontext(0x0004bbaf)]
+        HRESULT BatchCollisionRows([out, retval] VARIANT* pReturnValue);
+        [id(0x00000027), propget, helpstring("Determines the type of concurrency handling"), helpcontext(0x0004bbb0)]
+        HRESULT LockType([out, retval] LockTypeConstants* Value);
+        [id(0x00000027), propput, helpstring("Determines the type of concurrency handling"), helpcontext(0x0004bbb0)]
+        HRESULT LockType([in] LockTypeConstants Value);
+        [id(0x00000028), propget, helpstring("Current row status"), helpcontext(0x0004bbb2)]
+        HRESULT Status([out, retval] RowStatusConstants* Value);
+        [id(0x00000028), propput, helpstring("Current row status"), helpcontext(0x0004bbb2)]
+        HRESULT Status([in] RowStatusConstants Value);
+        [id(0x0000002e), helpstring("Retrieves multiple rows into a string"), helpcontext(0x0004bbb3)]
+        HRESULT GetClipString(
+                        [in] long NumRows, 
+                        [in, optional] VARIANT ColumnDelimiter, 
+                        [in, optional] VARIANT RowDelimiter, 
+                        [in, optional] VARIANT NullExpr, 
+                        [out, retval] BSTR* pStringValue);
+        [id(0x00000064), restricted, hidden]
+        HRESULT IsKnownLastRow([in] VARIANT_BOOL* pRetval);
+        [id(0x00000065), restricted, hidden]
+        HRESULT IsKnownFirstRow([in] VARIANT_BOOL* pRetval);
+        [id(0x00000066), restricted, hidden]
+        HRESULT Advise(
+                        [in] IUnknown* pSink, 
+                        [out] long* pnCookie);
+        [id(0x00000067), restricted, hidden]
+        HRESULT Unadvise([in] long nCookie);
+        [id(0x00000068), restricted, hidden]
+        HRESULT FreezeNotifications([in] VARIANT_BOOL Frozen);
+        [id(0x00000069), restricted, hidden]
+        HRESULT FindByValues(
+                        [in] long bmk, 
+                        [in] IUnknown* pBmk, 
+                        [in] long lFF, 
+                        [in] long lV, 
+                        [in] IUnknown* rgColumns, 
+                        [in] IUnknown* rgValues, 
+                        [in] IUnknown* plSeekFlags, 
+                        [in] IUnknown* pvFetchParams);
+        [id(0x0000006a), propget, restricted, hidden, helpstring("*** For internal use only ***")]
+        HRESULT Owner([out, retval] rdoQuery** pRet);
+        [id(0x0000006b), restricted, hidden]
+        HRESULT RDCClose();
+        [id(0xfffffff8), propget, hidden]
+        HRESULT Collect(
+                        [in] VARIANT Index, 
+                        [out, retval] VARIANT* pRetval);
+        [id(0xfffffff8), propput, hidden]
+        HRESULT Collect(
+                        [in] VARIANT Index, 
+                        [in] VARIANT pRetval);
+        [id(0x00000039), propget, restricted, hidden, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb86)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000039), propput, restricted, hidden, helpstring("User-defined name for a remote data object"), helpcontext(0x0004bb86)]
+        HRESULT NameA([in] BSTR Value);
+        [id(0x00000055), restricted, hidden, helpstring("Retrieves multiple rows into an array"), helpcontext(0x0004bbaa)]
+        HRESULT GetRowsA(
+                        [in] VARIANT NumRows, 
+                        [out, retval] VARIANT* pReturnValue);
+        [id(0x0000005a), propget, restricted, hidden]
+        HRESULT CollectA(
+                        [in] VARIANT Index, 
+                        [out, retval] VARIANT* pRetval);
+        [id(0x0000005a), propput, restricted, hidden]
+        HRESULT CollectA(
+                        [in] VARIANT Index, 
+                        [in] VARIANT pRetval);
+        [id(0x0000002f), helpstring("Fetch batch conflict values for the current row"), helpcontext(0x0004bc7b)]
+        HRESULT Resync();
+        [id(0x60020046), propget, restricted, hidden]
+        HRESULT FoxpCursor([out, retval] long* pCursor);
+        [id(0x60020047), propget, restricted, hidden]
+        HRESULT FoxBOF([out, retval] VARIANT_BOOL* pbBOF);
+        [id(0x60020047), propput, restricted, hidden]
+        HRESULT FoxBOF([in] VARIANT_BOOL pbBOF);
+        [id(0x60020049), propget, restricted, hidden]
+        HRESULT FoxEOF([out, retval] VARIANT_BOOL* pbEOF);
+        [id(0x60020049), propput, restricted, hidden]
+        HRESULT FoxEOF([in] VARIANT_BOOL pbEOF);
+        [id(0x6002004b), propget, restricted, hidden]
+        HRESULT FoxSQL([out, retval] BSTR* pSQL);
+        [id(0x6002004c), propget, restricted, hidden]
+        HRESULT FOxBindThreshold([out, retval] long* pThreshold);
+        [id(0x6002004d), propget, restricted, hidden]
+        HRESULT FoxQueryDefDisp([out, retval] IDispatch** lplpQryDisp);
+        [id(0x6002004e), propget, restricted, hidden]
+        HRESULT FoxConcurrency([out, retval] long* pnConcurrency);
+        [id(0x6002004f), propget, restricted, hidden]
+        HRESULT FoxCurrentRow([out, retval] long* pnCurrentRow);
+        [id(0x6002004f), propput, restricted, hidden]
+        HRESULT FoxCurrentRow([in] long pnCurrentRow);
+        [id(0x60020051), propget, restricted, hidden]
+        HRESULT FoxRowsetStart([out, retval] long* pnRowsetStart);
+        [id(0x60020051), propput, restricted, hidden]
+        HRESULT FoxRowsetStart([in] long pnRowsetStart);
+        [id(0x60020053), propget, restricted, hidden]
+        HRESULT FoxRowsetDirection([out, retval] long* pnRowsetDirect);
+        [id(0x60020053), propput, restricted, hidden]
+        HRESULT FoxRowsetDirection([in] long pnRowsetDirect);
+        [id(0x60020055), propget, restricted, hidden]
+        HRESULT FoxCurrentRowsetSize([out, retval] long* pnCurRowsetSize);
+        [id(0x60020055), propput, restricted, hidden]
+        HRESULT FoxCurrentRowsetSize([in] long pnCurRowsetSize);
+        [id(0x60020057), propget, restricted, hidden]
+        HRESULT FoxMaxRowsetSize([out, retval] long* pnMaxRowsetSize);
+        [id(0x60020057), propput, restricted, hidden]
+        HRESULT FoxMaxRowsetSize([in] long pnMaxRowsetSize);
+        [id(0x60020059), propget, restricted, hidden]
+        HRESULT FoxRecordCount([out, retval] long* pnRecordCnt);
+        [id(0x60020059), propput, restricted, hidden]
+        HRESULT FoxRecordCount([in] long pnRecordCnt);
+        [id(0x6002005b), restricted, hidden]
+        HRESULT FoxCreateErrorInfo(
+                        [in] long scode, 
+                        [in] long IdDecription, 
+                        [in] long IdHelp);
+        [id(0x6002005c), restricted, hidden]
+        HRESULT FoxCreateSQLErro(
+                        [in] long retcode, 
+                        [in] VARIANT_BOOL bCreateInfo, 
+                        [in] long hDbc, 
+                        [in] long hResults);
+        [id(0x6002005d), propget, restricted, hidden]
+        HRESULT RDCLastActionState([out, retval] long* pState);
+        [id(0x6002005e), restricted, hidden]
+        HRESULT GetClipStrCurrentRow(
+                        [in, optional] VARIANT ColumnDelimiter, 
+                        [in, optional] VARIANT RowDelimiter, 
+                        [in, optional] VARIANT NullExpr, 
+                        [out, retval] BSTR* pStringValue);
+    };
+
+    [
+      uuid(8B39DFBF-3647-11CF-814A-00AA00A40C25),
+      hidden
+    ]
+    dispinterface rdoResultsetEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("Fired after a new connection associated with the object"), helpcontext(0x0004bbb5)]
+            void Associate();
+            [id(0x00000002), helpstring("Fired after current rowset is changed"), helpcontext(0x0004bbb6)]
+            void ResultsChanged();
+            [id(0x00000003), helpstring("Fired after the connection is set to nothing"), helpcontext(0x0004bbb7)]
+            void Dissociate();
+            [id(0x00000004), helpstring("Fired after the state of current row has changed"), helpcontext(0x0004bbb9)]
+            void RowStatusChanged();
+            [id(0x00000005), helpstring("Fired after the resultset is positioned to a new row or no row at all"), helpcontext(0x0004bbba)]
+            void RowCurrencyChange();
+            [id(0x00000006), helpstring("Fired before a new connection is associated with the object"), helpcontext(0x0004bbbc)]
+            void WillAssociate(
+                            rdoConnection* Connection, 
+                            VARIANT_BOOL* Cancel);
+            [id(0x00000007), helpstring("Fired before the connection is set to nothing"), helpcontext(0x0004bbbd)]
+            void WillDissociate(VARIANT_BOOL* Cancel);
+            [id(0x00000008), helpstring("Fired before an update to the server occurs"), helpcontext(0x0004bbbe)]
+            void WillUpdateRows(short* ReturnCode);
+    };
+
+    [
+      uuid(5EBB68F4-3BF1-11CF-814C-00AA00A40C25),
+      helpstring("The rows resulting from a query"),
+      helpcontext(0x0004bb7d),
+      noncreatable,
+      licensed
+    ]
+    coclass rdoResultset {
+        [default] interface _rdoResultset;
+        [default, source] dispinterface rdoResultsetEvents;
+    };
+
+    [
+      odl,
+      uuid(5E71F050-551F-11CF-8152-00AA00A40C25),
+      helpstring("A prepared query definition"),
+      helpcontext(0x0004bbbf),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoPreparedStatement : IDispatch {
+        [id(0x00000001), propget, helpstring("Determines the ODBC's driver manager query timeout value"), helpcontext(0x0004bbc1)]
+        HRESULT QueryTimeout([out, retval] long* Value);
+        [id(0x00000001), propput, helpstring("Determines the ODBC's driver manager query timeout value"), helpcontext(0x0004bbc1)]
+        HRESULT QueryTimeout([in] long Value);
+        [id(0x00000002), propget, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bbc2)]
+        HRESULT Type([out, retval] QueryTypeConstants* Value);
+        [id(0x00000003), propget, helpstring("Determines the maximum number of rows returned from a query"), helpcontext(0x0004bbc4)]
+        HRESULT MaxRows([out, retval] long* Value);
+        [id(0x00000003), propput, helpstring("Determines the maximum number of rows returned from a query"), helpcontext(0x0004bbc4)]
+        HRESULT MaxRows([in] long Value);
+        [id(0x00000004), propget, helpstring("Determines the size of the largest column automatically bound under ODBC"), helpcontext(0x0004bbc8)]
+        HRESULT BindThreshold([out, retval] long* Value);
+        [id(0x00000004), propput, helpstring("Determines the size of the largest column automatically bound under ODBC"), helpcontext(0x0004bbc8)]
+        HRESULT BindThreshold([in] long Value);
+        [id(00000000), propget, helpstring("Contains all rdoParameter objects of an rdoQuery"), helpcontext(0x0004bbc9)]
+        HRESULT rdoParameters([out, retval] rdoParameters** pRetval);
+        [id(0x00000006), propget, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbcb)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000006), propput, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbcb)]
+        HRESULT Name([in] BSTR Value);
+        [id(0x00000009), propget, helpstring("Number of rows affected by the most recently invoked Execute method"), helpcontext(0x0004bbcc)]
+        HRESULT RowsAffected([out, retval] long* Value);
+        [id(0x0000000a), propget, helpstring("Determines the SQL statement defining the executed query"), helpcontext(0x0004bbce)]
+        HRESULT SQL([out, retval] BSTR* Value);
+        [id(0x0000000a), propput, helpstring("Determines the SQL statement defining the executed query"), helpcontext(0x0004bbce)]
+        HRESULT SQL([in] BSTR Value);
+        [id(0x0000000d), propget, helpstring("Determines the type of concurrency handling"), helpcontext(0x0004bbd0)]
+        HRESULT LockType([out, retval] LockTypeConstants* Value);
+        [id(0x0000000d), propput, helpstring("Determines the type of concurrency handling"), helpcontext(0x0004bbd0)]
+        HRESULT LockType([in] LockTypeConstants Value);
+        [id(0x0000000f), propget, helpstring("Contains stored rdoColumn objects"), helpcontext(0x0004bbd1)]
+        HRESULT rdoColumns([out, retval] rdoColumns** pRetval);
+        [id(0x00000010), propget, helpstring("Determines the number of rows in the keyset buffer"), helpcontext(0x0004bbd3)]
+        HRESULT KeysetSize([out, retval] long* Value);
+        [id(0x00000010), propput, helpstring("Determines the number of rows in the keyset buffer"), helpcontext(0x0004bbd3)]
+        HRESULT KeysetSize([in] long Value);
+        [id(0x00000011), propget, helpstring("Determines the number of cursor rows kept in memory"), helpcontext(0x0004bbd4)]
+        HRESULT RowsetSize([out, retval] long* Value);
+        [id(0x00000011), propput, helpstring("Determines the number of cursor rows kept in memory"), helpcontext(0x0004bbd4)]
+        HRESULT RowsetSize([in] long Value);
+        [id(0x00000015), propget, helpstring("The ODBC statement handle"), helpcontext(0x0004bbd6)]
+        HRESULT hStmt([out, retval] long* Value);
+        [id(0x00000016), propget, helpstring("Indicates whether an asynchronous query is still executing"), helpcontext(0x0004bbd7)]
+        HRESULT StillExecuting([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000018), propget, helpstring("Determines the type of cursor"), helpcontext(0x0004bbd9)]
+        HRESULT CursorType([out, retval] ResultsetTypeConstants* Value);
+        [id(0x00000018), propput, helpstring("Determines the type of cursor"), helpcontext(0x0004bbd9)]
+        HRESULT CursorType([in] ResultsetTypeConstants Value);
+        [id(0x00000019), propget, helpstring("Parent Connection"), helpcontext(0x0004bbdb)]
+        HRESULT ActiveConnection([out, retval] _rdoConnection** pRet);
+        [id(0x00000019), propputref, helpstring("Parent Connection"), helpcontext(0x0004bbdb)]
+        HRESULT ActiveConnection([in] _rdoConnection* pRet);
+        [id(0x0000001a), propget, helpstring("Indicates whether the query should be prepared"), helpcontext(0x0004bbdd)]
+        HRESULT Prepared([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000001a), propput, helpstring("Indicates whether the query should be prepared"), helpcontext(0x0004bbdd)]
+        HRESULT Prepared([in] VARIANT_BOOL Value);
+        [id(0x0000000b), propget, hidden]
+        HRESULT LogMessages([out, retval] BSTR* Value);
+        [id(0x0000000b), propput, hidden]
+        HRESULT LogMessages([in] BSTR Value);
+        [id(0x00000012), helpstring("Closes an open remote data object"), helpcontext(0x0004bbdf)]
+        HRESULT Close();
+        [id(0x00000013), helpstring("Executes a query or SQL statement on an object"), helpcontext(0x0004bbe0)]
+        HRESULT Execute([in, optional] VARIANT Options);
+        [id(0x00000014), helpstring("Creates a new rdoResultset object"), helpcontext(0x0004bbe1)]
+        HRESULT OpenResultset(
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT LockType, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] rdoResultset** pRetval);
+        [id(0x00000017), helpstring("Cancels an asynchronous query or pending results against the rdoResultset object"), helpcontext(0x0004bbe2)]
+        HRESULT Cancel();
+        [id(0x00000064), propget, restricted, hidden, helpstring("*** For internal use only ***")]
+        HRESULT Owner([out, retval] _rdoConnection** pRet);
+        [id(0x0000002e), propget, restricted, hidden, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbcb)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000032), propget, restricted, hidden, helpstring("Determines the SQL statement defining the executed query"), helpcontext(0x0004bbce)]
+        HRESULT SQLA([out, retval] BSTR* Value);
+        [id(0x00000032), propput, restricted, hidden, helpstring("Determines the SQL statement defining the executed query"), helpcontext(0x0004bbce)]
+        HRESULT SQLA([in] BSTR Value);
+        [id(0x00000033), propget, restricted, hidden]
+        HRESULT LogMessagesA([out, retval] BSTR* Value);
+        [id(0x00000033), propput, restricted, hidden]
+        HRESULT LogMessagesA([in] BSTR Value);
+        [id(0x00000034), restricted, hidden]
+        HRESULT DaoOpenResultset(
+                        [in, optional] VARIANT Type, 
+                        [in, optional] VARIANT LockType, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] rdoResultset** pRetval);
+        [id(0x60020029), propget, restricted, hidden]
+        HRESULT FoxMaxRows([out, retval] long* pnMaxRows);
+        [id(0x00000007), propget, hidden]
+        HRESULT Updatable([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000008), propget, hidden]
+        HRESULT Connect([out, retval] BSTR* Value);
+        [id(0x00000030), propget, restricted, hidden]
+        HRESULT ConnectA([out, retval] BSTR* Value);
+        [id(0x0000000e), propget, hidden]
+        HRESULT ErrorThreshold([out, retval] long* Value);
+        [id(0x0000000e), propput, hidden]
+        HRESULT ErrorThreshold([in] long Value);
+    };
+
+    [
+      uuid(9A8831F2-A263-11D1-8DCF-00A0C90FFFC2),
+      helpstring("A prepared query definition."),
+      helpcontext(0x0004bbe3),
+      licensed
+    ]
+    coclass rdoQuery {
+        [default] interface rdoPreparedStatement;
+    };
+
+    [
+      odl,
+      uuid(5E71F051-551F-11CF-8152-00AA00A40C25),
+      helpstring("Defines a logical set of connections for a particular user ID"),
+      helpcontext(0x0004bbe8),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface _rdoEnvironment : IDispatch {
+        [id(00000000), propget, helpstring("Contains all open rdoConnection objects opened in an rdoEnvironment object"), helpcontext(0x0004bbe9)]
+        HRESULT rdoConnections([out, retval] rdoConnections** pRetval);
+        [id(0x00000002), propget, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbea)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000003), propget, helpstring("Determines a value representing a user of an rdoEnvironment object"), helpcontext(0x0004bbec)]
+        HRESULT UserName([out, retval] BSTR* pRetval);
+        [id(0x00000003), propput, helpstring("Determines a value representing a user of an rdoEnvironment object"), helpcontext(0x0004bbec)]
+        HRESULT UserName([in] BSTR pRetval);
+        [id(0x00000004), propput, helpstring("Represents the password used during the creation of an rdoEnvironment"), helpcontext(0x0004bbed)]
+        HRESULT Password([in] BSTR rhs);
+        [id(0x0000000a), propget, helpstring("Timeout value for connecting to data source"), helpcontext(0x0004bbef)]
+        HRESULT LoginTimeout([out, retval] long* Value);
+        [id(0x0000000a), propput, helpstring("Timeout value for connecting to data source"), helpcontext(0x0004bbef)]
+        HRESULT LoginTimeout([in] long Value);
+        [id(0x0000000b), propget, helpstring("Determines where the cursor is to be created"), helpcontext(0x0004bbf1)]
+        HRESULT CursorDriver([out, retval] CursorDriverConstants* Value);
+        [id(0x0000000b), propput, helpstring("Determines where the cursor is to be created"), helpcontext(0x0004bbf1)]
+        HRESULT CursorDriver([in] CursorDriverConstants Value);
+        [id(0x0000000c), propget, helpstring("The ODBC environment handle"), helpcontext(0x0004bbf2)]
+        HRESULT hEnv([out, retval] long* Value);
+        [id(0x00000005), helpstring("Begins a new transaction"), helpcontext(0x0004bbf3)]
+        HRESULT BeginTrans();
+        [id(0x00000006), helpstring("Closes an open remote data object"), helpcontext(0x0004bbf4)]
+        HRESULT Close();
+        [id(0x00000007), helpstring("Ends the current transaction and saves the changes"), helpcontext(0x0004bbf5)]
+        HRESULT CommitTrans();
+        [id(0x00000008), helpstring("Ends the transaction and restores the database to its state before the most recent BeginTrans"), helpcontext(0x0004bbf6)]
+        HRESULT RollbackTrans();
+        [id(0x00000009), helpstring("Opens a connection to an ODBC data source"), helpcontext(0x0004bbf8)]
+        HRESULT OpenConnection(
+                        [in] BSTR dsName, 
+                        [in, optional] VARIANT Prompt, 
+                        [in, optional] VARIANT Readonly, 
+                        [in, optional] VARIANT Connect, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] _rdoConnection** pRetval);
+        [id(0x00000064), restricted, hidden, helpstring("*** For internal use only ***")]
+        HRESULT RDCOpenConnection(
+                        [in] BSTR dsName, 
+                        [in, optional] VARIANT Prompt, 
+                        [in, optional] VARIANT Readonly, 
+                        [in, optional] VARIANT Connect, 
+                        [out, retval] _rdoConnection** pRetval);
+        [id(0x00000065), restricted, hidden, helpstring("*** For internal use only ***")]
+        HRESULT GetOwner([out, retval] _rdoEngine** lplpEngine);
+        [id(0x00000020), propget, restricted, hidden, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbea)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000021), propget, restricted, hidden, helpstring("Determines a value representing a user of an rdoEnvironment object"), helpcontext(0x0004bbec)]
+        HRESULT UserNameA([out, retval] BSTR* pRetval);
+        [id(0x00000021), propput, restricted, hidden, helpstring("Determines a value representing a user of an rdoEnvironment object"), helpcontext(0x0004bbec)]
+        HRESULT UserNameA([in] BSTR pRetval);
+        [id(0x00000022), propput, restricted, hidden, helpstring("Represents the password used during the creation of an rdoEnvironment"), helpcontext(0x0004bbed)]
+        HRESULT PasswordA([in] BSTR rhs);
+        [id(0x00000027), restricted, hidden, helpstring("Opens a connection to an ODBC data source"), helpcontext(0x0004bbf8)]
+        HRESULT OpenConnectionA(
+                        [in] BSTR dsName, 
+                        [in, optional] VARIANT Prompt, 
+                        [in, optional] VARIANT Readonly, 
+                        [in, optional] VARIANT Connect, 
+                        [in, optional] VARIANT Options, 
+                        [out, retval] _rdoConnection** pRetval);
+        [id(0x00000082), restricted, hidden, helpstring("*** For internal use only ***")]
+        HRESULT RDCOpenConnectionA(
+                        [in] BSTR dsName, 
+                        [in, optional] VARIANT Prompt, 
+                        [in, optional] VARIANT Readonly, 
+                        [in, optional] VARIANT Connect, 
+                        [out, retval] _rdoConnection** pRetval);
+    };
+
+    [
+      uuid(8B39DFBC-3647-11CF-814A-00AA00A40C25),
+      hidden
+    ]
+    dispinterface rdoEnvironmentEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("Fired after the beginTrans method has completed"), helpcontext(0x0004bbf9)]
+            void BeginTrans();
+            [id(0x00000002), helpstring("Fired after the CommitTrans method has completed"), helpcontext(0x0004bbfa)]
+            void CommitTrans();
+            [id(0x00000003), helpstring("Fired after the RollbackTrans method has completed"), helpcontext(0x0004bbfb)]
+            void RollbackTrans();
+    };
+
+    [
+      uuid(5EBB68F6-3BF1-11CF-814C-00AA00A40C25),
+      helpstring("Defines a logical set of connections for a particular user ID"),
+      helpcontext(0x0004bbe8),
+      noncreatable,
+      licensed
+    ]
+    coclass rdoEnvironment {
+        [default] interface _rdoEnvironment;
+        [default, source] dispinterface rdoEnvironmentEvents;
+    };
+
+    [
+      odl,
+      uuid(5E71F052-551F-11CF-8152-00AA00A40C25),
+      helpstring("A parameter associated with an rdoQuery"),
+      helpcontext(0x0004bbfc),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoParameter : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbfe)]
+        HRESULT Name([out, retval] BSTR* Value);
+        [id(0x00000001), propput, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbfe)]
+        HRESULT Name([in] BSTR Value);
+        [id(0x00000002), propget, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bc00)]
+        HRESULT Type([out, retval] DataTypeConstants* Value);
+        [id(0x00000002), propput, helpstring("Indicates the type or data type of an object"), helpcontext(0x0004bc00)]
+        HRESULT Type([in] DataTypeConstants Value);
+        [id(00000000), propget, helpstring("Determines the data value of an object"), helpcontext(0x0004bc02)]
+        HRESULT Value([out, retval] VARIANT* Value);
+        [id(00000000), propput, helpstring("Determines the data value of an object"), helpcontext(0x0004bc02)]
+        HRESULT Value([in] VARIANT Value);
+        [id(0x00000003), propget, helpstring("Determines how an argument is passed to or from a procedure"), helpcontext(0x0004bc04)]
+        HRESULT Direction([out, retval] DirectionConstants* Value);
+        [id(0x00000003), propput, helpstring("Determines how an argument is passed to or from a procedure"), helpcontext(0x0004bc04)]
+        HRESULT Direction([in] DirectionConstants Value);
+        [id(0x00000004), helpstring("Appends data from a string expression to an rdoParameter object"), helpcontext(0x0004bc05)]
+        HRESULT AppendChunk([in] VARIANT Chunk);
+        [id(0x00000015), propget, restricted, hidden, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbfe)]
+        HRESULT NameA([out, retval] BSTR* Value);
+        [id(0x00000015), propput, restricted, hidden, helpstring("Indicates the name of a remote data object"), helpcontext(0x0004bbfe)]
+        HRESULT NameA([in] BSTR Value);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Determines the data value of an object"), helpcontext(0x0004bc02)]
+        HRESULT ValueA([out, retval] VARIANT* Value);
+        [id(0x00000014), propput, restricted, hidden, helpstring("Determines the data value of an object"), helpcontext(0x0004bc02)]
+        HRESULT ValueA([in] VARIANT Value);
+        [id(0x00000005), propget, helpstring("Indicates the size of an rdoParameter object"), helpcontext(0x0004bc7e)]
+        HRESULT Size([out, retval] long* Value);
+        [id(0x00000005), propput, helpstring("Indicates the size of an rdoParameter object"), helpcontext(0x0004bc7e)]
+        HRESULT Size([in] long Value);
+    };
+
+    [
+      odl,
+      uuid(64949F43-67B6-11CE-9216-08002B369A33),
+      helpstring("Dual interface for ODBC Ole object collection"),
+      helpcontext(0x0004bc06),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface DualCollection : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc07)]
+        HRESULT Count([out, retval] long* pCount);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* pItem);
+        [id(0x00000007), restricted, hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, restricted, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc08)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] IDispatch** pRet);
+        [id(0xfffffffc), restricted, hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc08)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] IDispatch** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] IDispatch** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] IDispatch** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] IDispatch** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(2E746492-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoColumn objects"),
+      helpcontext(0x0004bc09),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoColumns : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc0a)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoColumn);
+        [id(0x00000007), helpstring("Refreshes the column definitions"), helpcontext(0x0004bc0b)]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc0c)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] _rdoColumn** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc0c)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoColumn** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] _rdoColumn** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] _rdoColumn** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] _rdoColumn** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(2E746493-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoTable objects"),
+      helpcontext(0x0004bc0d),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoTables : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc0e)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoTable);
+        [id(0x00000007), helpstring("Refreshes the table definitions"), helpcontext(0x0004bc0f)]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc10)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoTable** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc10)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoTable** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] rdoTable** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] rdoTable** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] rdoTable** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(2E746494-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoConnection objects"),
+      helpcontext(0x0004bc11),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoConnections : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc12)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), helpstring("Removes a specific member from a collection."), helpcontext(0x0004bc13)]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), helpstring("Add item to collection"), helpcontext(0x0004bc14)]
+        HRESULT Add([in] rdoConnection* prdoConnection);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc15)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] _rdoConnection** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc15)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] _rdoConnection** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] _rdoConnection** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] _rdoConnection** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] _rdoConnection** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(2E746495-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoParameter objects"),
+      helpcontext(0x0004bc16),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoParameters : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc17)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoParameter);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc18)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoParameter** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc18)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoParameter** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] rdoParameter** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] rdoParameter** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] rdoParameter** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(2E746496-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoResultset objects"),
+      helpcontext(0x0004bc19),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoResultsets : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc1a)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoResultset);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc1b)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] _rdoResultset** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc1b)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] _rdoResultset** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] _rdoResultset** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] _rdoResultset** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] _rdoResultset** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(5E71F053-551F-11CF-8152-00AA00A40C25),
+      helpstring("Collection of rdoEnvironment objects"),
+      helpcontext(0x0004bc1c),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoEnvironments : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc1d)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), helpstring("Removes a specific member from a collection."), helpcontext(0x0004bc1e)]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), helpstring("Adds a member to a Collection object."), helpcontext(0x0004bc1f)]
+        HRESULT Add([in] rdoEnvironment* prdoEnvironment);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc20)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] _rdoEnvironment** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc20)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoEnvironment** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] _rdoEnvironment** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] _rdoEnvironment** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] _rdoEnvironment** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(2E746498-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoQuery objects"),
+      helpcontext(0x0004bc21),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoQueries : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc22)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoQuery);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc23)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoQuery** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc23)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoQuery** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] rdoPreparedStatement** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] rdoPreparedStatement** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] rdoPreparedStatement** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(5D545B93-97CA-11CF-8171-00AA00A40C25),
+      hidden,
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoPreparedStatements : IDispatch {
+        [id(0x00000001), propget, hidden]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoQuery);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, hidden]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoQuery** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), restricted, hidden]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoQuery** pRet);
+    };
+
+    [
+      odl,
+      uuid(2E7464A0-6ED1-11CE-9223-08002B369A33),
+      helpstring("Collection of rdoError objects"),
+      helpcontext(0x0004bc24),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface rdoErrors : IDispatch {
+        [id(0x00000001), propget, helpstring("Indicates the number of members in a Remote Data Object collection"), helpcontext(0x0004bc25)]
+        HRESULT Count([out, retval] long* Count);
+        [id(0x00000002), propget, restricted, hidden]
+        HRESULT Editable([out, retval] VARIANT_BOOL* Editable);
+        [id(0x00000002), propput, restricted, hidden]
+        HRESULT Editable([in] VARIANT_BOOL Editable);
+        [id(0x00000005), restricted, hidden]
+        HRESULT Remove([in] VARIANT ItemToRemove);
+        [id(0x00000006), restricted, hidden]
+        HRESULT Add([in] IDispatch* prdoError);
+        [id(0x00000007), hidden]
+        HRESULT Refresh();
+        [id(00000000), propget, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc26)]
+        HRESULT Item(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoError** pRet);
+        [id(0xfffffffc), hidden]
+        HRESULT _NewEnum([out, retval] IUnknown** pRet);
+        [id(0x00000009), helpstring("Removes all objects in a collection."), helpcontext(0x0004bc27)]
+        HRESULT Clear();
+        [id(0x00000019), restricted, hidden]
+        HRESULT RemoveA([in] VARIANT ItemToRemove);
+        [id(0x00000014), propget, restricted, hidden, helpstring("Returns a specific member of a collection"), helpcontext(0x0004bc26)]
+        HRESULT ItemA(
+                        [in] VARIANT Index, 
+                        [out, retval] rdoError** pRet);
+        [id(0x0000001e), restricted, hidden]
+        HRESULT Fox_GetHeadPos([out] long* pPos);
+        [id(0x0000001f), restricted, hidden]
+        HRESULT Fox_GetNext(
+                        [in, out] long* pPos, 
+                        [out] rdoError** lplpItem);
+        [id(0x00000020), restricted, hidden]
+        HRESULT Fox_GetPrev(
+                        [in, out] long* pPos, 
+                        [out] rdoError** lplpItem);
+        [id(0x00000021), restricted, hidden]
+        HRESULT Fox_GetItem(
+                        [in] long Index, 
+                        [out] rdoError** lplpItem);
+    };
+
+    [
+      odl,
+      uuid(499109E4-1E20-11CF-8146-00AA00A40C25),
+      hidden,
+      restricted
+    ]
+    interface IPrivColGetRows : IUnknown {
+        HRESULT _stdcall BindColumn(
+                        [in] short DataType, 
+                        [in] void* pColData, 
+                        [in] long MaxDataLen, 
+                        [in] long* pdataLen);
+        HRESULT _stdcall GetData(
+                        [in] short DataType, 
+                        [in] void* pColData, 
+                        [in] long MaxDataLen, 
+                        [in] long* pdataLen);
+    };
+
+    [
+      odl,
+      uuid(499109E5-1E20-11CF-8146-00AA00A40C25),
+      hidden,
+      restricted
+    ]
+    interface IPrivRsGetRows : IUnknown {
+        HRESULT _stdcall Initiallize();
+        HRESULT _stdcall CanGetDataBlock([in] VARIANT_BOOL* pfCanGetDatablock);
+        HRESULT _stdcall SetRowsetSize([in] long dwNumRows);
+        HRESULT _stdcall SetRowLen([in] long dwRowLen);
+        HRESULT _stdcall GetRows(
+                        [in] long lRow, 
+                        [in] short dwFetchType, 
+                        [out] long* pudwNomRows, 
+                        [out] short* pudwStatus);
+        HRESULT _stdcall get_DaoBOF([out, retval] VARIANT_BOOL* pBOF);
+        HRESULT _stdcall get_DaoEOF([out, retval] VARIANT_BOOL* pEOF);
+        HRESULT _stdcall get_DaoBookmark([out, retval] VARIANT* Value);
+        HRESULT _stdcall MoveTo([in] long Index);
+        HRESULT _stdcall get_DaoRowsetPos(
+                        [out] long* lpRowSetPos, 
+                        [out] long* lpRowsInBuf, 
+                        [out] long* lpRowIndex);
+    };
+};

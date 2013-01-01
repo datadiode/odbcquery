@@ -1,0 +1,4 @@
+EXTERN_C void NTAPI MakeWebLinkButton(HWND, int, LPCTSTR);
+EXTERN_C void NTAPI DrawWebLinkButton(DRAWITEMSTRUCT *);
+EXTERN_C LPCTSTR NTAPI HrefWebLinkButton(HWND);
+EXTERN_C LPCTSTR NTAPI OpenWebLinkButton();

@@ -1,0 +1,54 @@
+#include <windows.h>
+#include <commctrl.h>
+#include <richedit.h>
+#define IDC_STATIC (-1)
+
+#define IDD_TRACE                       101
+#define IDD_OPTIONS                     102
+#define IDD_ABOUT                       103
+#define IDM_CONTEXT                     107
+#define IDC_PB_UNSELECT_ALL             1001
+#define IDC_PB_SELECT_ALL               1002
+#define IDC_ED_OUTPUT                   1008
+#define IDC_CHECK_LOGFILE               1010
+#define IDC_STATIC_LOGFILE              1011
+#define IDC_PB_CLEAR                    1012
+#define IDC_PB_OPTIONS                  1013
+#define IDC_LB_FILTER                   1018
+#define IDC_FS_FILTER                   1019
+#define IDC_TG_TOPMOST                  1021
+#define IDC_CB_FONTFACE                 1022
+#define IDC_TG_SERIALIZE_CALLS          1022
+#define IDC_CB_FONTSIZE                 1023
+#define IDC_TG_HIDE_NESTED_CALLS        1023
+#define IDC_TG_HIDE_DIAG_INFO           1024
+#define IDC_TG_DISABLE_TRACE            1025
+#define IDC_TG_WAIT_FOR_CLOSE           1026
+#define IDC_PB_ABOUT                    1027
+#define IDC_TG_CATCH_DEBUG_STRINGS      1027
+#define IDC_TG_TRACE_THREAD_LIFETIME    1028
+#define IDC_ED_LINKS                    1031
+#define IDC_PB_BKGND_COLOR              1032
+#define IDC_TG_SEND_TO_WINDOW           1033
+#define IDC_TG_SEND_TO_FILE             1034
+#define IDC_PB_POPUP_COLOR              1035
+#define IDC_FS_SEND_TO                  1036
+#define IDC_FS_WINDOW                   1037
+#define IDC_ST_API_LEVEL                1038
+#define IDC_FS_FILE                     1038
+#define IDC_ST_VERSION                  1039
+#define IDC_FS_EMERGENCY                1039
+#define IDC_CB_HIGHWATERMARK            1040
+#define IDC_ST_VERDATE                  1040
+#define IDC_ED_ROWDUMPLIMIT             1041
+#define IDC_CB_HWM_FILE                 1042
+#define IDC_PB_KILL_PROCESS             1043
+#define ID_TRACEWND_CUT                 40003
+#define ID_TRACEWND_COPY                40004
+#define ID_TRACEWND_PASTE               40005
+#define ID_TRACEWND_DELETE              40006
+#define ID_TRACEWND_PASTEASSINGLELINE   40007
+#define ID_TRACEWND_SELECTALL           40008
+#define ID_TRACEWND_UNDO                40009
+#define ID_TRACEWND_REDO                40010
+#define ID_TRACEWND_JOINLINES           40011
