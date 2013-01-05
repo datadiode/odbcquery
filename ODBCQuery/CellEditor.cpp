@@ -1,6 +1,6 @@
 /*/CellEditor.cpp
 
-Last edit: 2013-01-01 Jochen Neubeck
+Last edit: 2013-01-05 Jochen Neubeck
 
 [The MIT license]
 
@@ -435,10 +435,6 @@ static LRESULT CALLBACK CellEditor_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 						col += Header_GetItemCount(hwndHead);
 						if (--row < 0)
 							return 0;
-						::SetWindowLong(hwndEdit, GWL_ID, col);
-						CellEditor_EnsureVisible(hWnd, row, col);
-						wParam = VK_UP;
-						break;
 					}
 					CellEditor_SelectCell(hWnd, row, col);
 					return 0;
@@ -461,10 +457,6 @@ static LRESULT CALLBACK CellEditor_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 						col = 0;
 						if (++row >= ListView_GetItemCount(hWnd))
 							return 0;
-						::SetWindowLong(hwndEdit, GWL_ID, col);
-						CellEditor_EnsureVisible(hWnd, row, col);
-						wParam = VK_DOWN;
-						break;
 					}
 					CellEditor_SelectCell(hWnd, row, col);
 					return 0;
