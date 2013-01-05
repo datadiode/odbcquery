@@ -12,6 +12,7 @@
 #include "TextBox.h"
 #include "HexBox.h"
 #include "CellEditor.h"
+#include "ExcelExport.h"
 
 #include <oleacc.h>
 #pragma comment(lib, "oleacc.lib")
@@ -732,35 +733,6 @@ void CChildFrame::OnDBRowDeleteitemRangeLv(UINT, NMHDR *pNMHDR, LRESULT *pResult
 	delete reinterpret_cast<CObject *>(pNM->lParam);
 }
 
-static void FixScale(const CODBCFieldInfo &fieldInfo, CString &s)
-{
-	int n = s.GetLength();
-	switch (fieldInfo.m_nSQLType)
-	{
-	case SQL_NUMERIC:
-	case SQL_DECIMAL:
-	case SQL_INTEGER:
-	case SQL_SMALLINT:
-	case SQL_TINYINT:
-	case SQL_FLOAT:
-	case SQL_REAL:
-	case SQL_DOUBLE:
-		// Numeric type - pad with trailing zeros as desired
-		if (fieldInfo.m_nScale > 0)
-		{
-			int dp = s.ReverseFind('.');
-			if (dp == -1)
-				dp = n;
-			int cch = dp + fieldInfo.m_nScale + 1;
-			LPTSTR pch = s.GetBufferSetLength(cch);
-			while (n < cch)
-				pch[n++] = '0';
-			pch[dp] = '.';
-		}
-		break;
-	}
-}
-
 void CChildFrame::OnDBRowGetdispinfoRangeLv(UINT, NMHDR *pNMHDR, LRESULT *pResult)
 {
 	NMLVDISPINFO *pNM = (NMLVDISPINFO *)pNMHDR;
@@ -775,7 +747,7 @@ void CChildFrame::OnDBRowGetdispinfoRangeLv(UINT, NMHDR *pNMHDR, LRESULT *pResul
 			if (s.GetAt(n - 1))
 			{
 				// Looks like an ANSI string
-				FixScale(fieldInfo, s);
+				CRecordsetEx::FixScale(fieldInfo, s);
 				n = s.GetLength();
 				// Convert to Unicode
 				CString u;
@@ -958,7 +930,7 @@ int CChildFrame::UpdateRow(CListCtrl *pLv, int iRow)
 					if (pRow)
 					{
 						strValueDB = pRow->Item(iCol)->asString();
-						FixScale(fieldInfo, strValueDB);
+						CRecordsetEx::FixScale(fieldInfo, strValueDB);
 					}
 					else if (strValueDB.GetLength())
 					{
@@ -2262,7 +2234,7 @@ void CChildFrame::CreateExcelDocument(CListCtrl *pLv)
 	if (dlg.DoModal() == IDOK)
 	{
 		CFile f(dlg.GetPathName(), CFile::modeWrite | CFile::modeCreate);
-		CDBRow::CreateExcelDocument(*pLv, &f);
+		BIFF_WriteReport(pLv, &f);
 	}
 }
 

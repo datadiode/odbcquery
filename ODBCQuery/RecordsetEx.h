@@ -24,6 +24,7 @@ public:
 	static int LookAheadSQL(LPCTSTR, TCHAR = _T(';'));
 	static LPTSTR LookAheadTerminateSQL(LPTSTR);
 	static int IsPrefix(const CString &, LPCTSTR);
+	static void FixScale(const CODBCFieldInfo &fieldInfo, CString &s);
 	enum ExecuteStatus
 	{
 		pending,

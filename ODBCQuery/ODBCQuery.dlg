@@ -62,7 +62,7 @@ IDR_CONTEXT MENU
         MENUITEM "Delete Rows", 2
         MENUITEM "Text Box", 3
         MENUITEM "Hex Box", 4
-        MENUITEM "Export as XLS", 5
+        MENUITEM "Export to Excel", 5
     }
     POPUP "4=Filter"
     {

@@ -544,12 +544,10 @@ int CALLBACK CDBRow::Handle::LVCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lP
 	return lParamSort >= 0 ? cmp : -cmp;
 }
 
-void CDBRow::WriteString(CFile *const pFile, LPCTSTR pszText)
+void CDBRow::WriteString(CFile *const pFile, LPCSTR pchOctets)
 {
 	if (pFile)
 	{
-		USES_CONVERSION;
-		LPCSTR pchOctets = T2A((LPTSTR)pszText);
 		size_t cchAhead = strlen(pchOctets);
 		while (LPCSTR pchAhead = (LPCSTR)memchr(pchOctets, '\n', cchAhead))
 		{
@@ -562,14 +560,6 @@ void CDBRow::WriteString(CFile *const pFile, LPCTSTR pszText)
 			cchAhead -= cchLine;
 		}
 		pFile->Write(pchOctets, cchAhead);
-	}
-}
-
-void CDBRow::WriteBinary(CFile *const pFile, const void *pv, UINT cb)
-{
-	if (pFile)
-	{
-		pFile->Write(pv, cb);
 	}
 }
 
@@ -641,28 +631,8 @@ UINT CDBRow::WriteHtcf(CFile *pf, UINT htcf)
 	return htcf;
 }
 
-namespace BIFF
+UINT CDBRow::WriteReport(CListCtrl &Lv, CFile *pfText, CFile *pfHtml, UINT htcf)
 {
-    static const WORD DefaultColor = 0x7fff;
-    static const WORD BOFRecord = 0x0809;
-    static const WORD EOFRecord = 0x0A;
-    static const WORD FontRecord = 0x0231;
-    static const WORD FormatRecord = 0x001E;
-    static const WORD LabelRecord = 0x0204;
-    static const WORD WindowProtectRecord = 0x0019;
-    static const WORD XFRecord = 0x0243;
-    static const WORD HeaderRecord = 0x0014;
-    static const WORD FooterRecord = 0x0015;
-    static const WORD ExtendedRecord = 0x0243;
-    static const WORD StyleRecord = 0x0293;
-    static const WORD CodepageRecord = 0x0042;
-    static const WORD NumberRecord = 0x0203;
-    static const WORD ColumnInfoRecord = 0x007D;
-};
-
-UINT CDBRow::WriteReport(CListCtrl &Lv, CFile *pfText, CFile *pfHtml, UINT htcf, CFile *pfExcel)
-{
-	using namespace BIFF;
 	CHeaderCtrl *pHd = static_cast<CHeaderCtrl *>(CWnd::FromHandle(
 		reinterpret_cast<HWND>(Lv.SendMessage(LVM_GETHEADER))));
 	int nCols = pHd->GetItemCount();
@@ -685,15 +655,6 @@ UINT CDBRow::WriteReport(CListCtrl &Lv, CFile *pfText, CFile *pfHtml, UINT htcf,
 	Lv.GetWindowText(sTitle);
 	CString sTsNow = COleDateTime::GetCurrentTime().Format();
 	WriteString(pfText, sTitle);
-	if (pfExcel)
-	{
-		static const WORD data[] =
-		{
-			BOFRecord, 8, 0, 0x10, 0, 0,
-			CodepageRecord, 0x2, CP_UTF8
-		};
-		pfExcel->Write(data, sizeof data);
-	}
 	WriteString(pfText, _T("\n"));
 	WriteString(pfText, sTsNow);
 	WriteString(pfText, _T("\n"));
@@ -713,19 +674,6 @@ UINT CDBRow::WriteReport(CListCtrl &Lv, CFile *pfText, CFile *pfHtml, UINT htcf,
 		{
 			CString s = lvc.pszText;
 			WriteString(pfText, s);
-			if (pfExcel)
-			{
-				int len = s.GetLength();
-				WORD data[] =
-				{
-					ColumnInfoRecord, 12,
-					item.iSubItem, item.iSubItem, lvc.cx * 256 / cxChar, 15, 0, 0,
-					LabelRecord, 8 + len,
-					iRow, item.iSubItem, 0, len
-				};
-				pfExcel->Write(data, sizeof data);
-				pfExcel->Write(s, len);
-			}
 			MakeHtmlEntities(s);
 			WriteString(pfHtml, s);
 		}
@@ -763,23 +711,19 @@ UINT CDBRow::WriteReport(CListCtrl &Lv, CFile *pfText, CFile *pfHtml, UINT htcf,
 				}
 				else
 				{
-					WriteString(pfText, CString((LPCWSTR)(LPCTSTR)s));
+					WriteString(pfText, CString((LPCWSTR)(LPCSTR)s));
 				}
-				// convert to UTF8
-				n = s.GetLength() / sizeof(WCHAR);
-				int cch = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)(LPCTSTR)s, n, 0, 0, 0, 0);
-				CString u;
-				LPTSTR pch = u.GetBufferSetLength(cch);
-				WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)(LPCTSTR)s, n, pch, cch, 0, 0);
-				if (pfExcel)
+				if (pfHtml)
 				{
-					int len = u.GetLength();
-					WORD data[] = { LabelRecord, 8 + len, iRow, item.iSubItem, 0, len };
-					pfExcel->Write(data, sizeof data);
-					pfExcel->Write(u, len);
+					// convert to UTF8
+					n = s.GetLength() / sizeof(WCHAR);
+					int cch = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)(LPCTSTR)s, n, 0, 0, 0, 0);
+					CString u;
+					LPTSTR pch = u.GetBufferSetLength(cch);
+					WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)(LPCTSTR)s, n, pch, cch, 0, 0);
+					//MakeHtmlEntities(s);
+					WriteString(pfHtml, u);
 				}
-				//MakeHtmlEntities(s);
-				WriteString(pfHtml, u);
 			}
 			// Advance to next column
 			++item.iSubItem;
@@ -791,15 +735,5 @@ UINT CDBRow::WriteReport(CListCtrl &Lv, CFile *pfText, CFile *pfHtml, UINT htcf,
 	WriteString(pfHtml, _T("</table>\n"));
 	if (htcf)
 		htcf = WriteHtcf(pfHtml, htcf);
-	if (pfExcel)
-	{
-		static const WORD data[] = { EOFRecord, 00 };
-		pfExcel->Write(data, sizeof data);
-	}
 	return htcf;
-}
-
-void CDBRow::CreateExcelDocument(CListCtrl &Lv, CFile *pfExcel)
-{
-	CDBRow::WriteReport(Lv, NULL, NULL, 0, pfExcel);
 }

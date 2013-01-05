@@ -79,12 +79,10 @@ public:
 	}
 	static const CString &Enquote(CString &);
 	static CString MakeString(BSTR);
-	static void WriteString(CFile *const, LPCTSTR);
-	static void WriteBinary(CFile *const, const void *, UINT);
+	static void WriteString(CFile *, LPCSTR);
 	static void MakeHtmlEntities(CString &);
 	static UINT WriteHtcf(CFile *pf, UINT htcf = 0);
-	static UINT WriteReport(CListCtrl &, CFile *pfText, CFile *pfHtml = 0, UINT htcf = 0, CFile *pfExcel = 0);
-	static void CreateExcelDocument(CListCtrl &, CFile *);
+	static UINT WriteReport(CListCtrl &, CFile *pfText, CFile *pfHtml = 0, UINT htcf = 0);
 private:
 	CDBRow(const CDBRow &); // disallow copy construction
 };

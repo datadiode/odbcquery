@@ -225,7 +225,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="0"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(SolutionDir)int\include;\dm\MFC\include;\dm\ATL\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
@@ -261,6 +261,7 @@
 				IgnoreAllDefaultLibraries="true"
 				IgnoreDefaultLibraryNames=""
 				ModuleDefinitionFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -318,6 +319,10 @@
 			</File>
 			<File
 				RelativePath="dbrow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ExcelExport.h"
 				>
 			</File>
 			<File
@@ -423,6 +428,10 @@
 			</File>
 			<File
 				RelativePath="dbrow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ExcelExport.cpp"
 				>
 			</File>
 			<File
