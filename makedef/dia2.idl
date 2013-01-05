@@ -1,0 +1,1112 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// Generated from %ProgramFiles%\Common Files\microsoft shared\VC\msdia90.dll
+// Manually rearranged to make it compile
+
+[
+  uuid(106173A0-0173-4E5C-84E7-E915422BE997),
+  version(2.0),
+  helpstring("dia 2.0 Type Library")
+]
+library Dia2Lib
+{
+    // TLib :     // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("stdole2.tlb");
+
+    // Forward declare all types defined in this typelib
+    interface IDiaDataSource;
+    interface IStream;
+    interface ISequentialStream;
+    interface IDiaSession;
+    interface IDiaSymbol;
+    interface IDiaEnumSymbols;
+    interface IDiaLVarInstance;
+    interface IDiaStackFrame;
+    interface IDiaEnumTables;
+    interface IDiaTable;
+    interface IEnumUnknown;
+    interface IDiaEnumSymbolsByAddr;
+    interface IDiaEnumSourceFiles;
+    interface IDiaSourceFile;
+    interface IDiaEnumLineNumbers;
+    interface IDiaLineNumber;
+    interface IDiaEnumInjectedSources;
+    interface IDiaInjectedSource;
+    interface IDiaEnumDebugStreams;
+    interface IDiaEnumDebugStreamData;
+    interface IDiaStackWalker;
+    interface IDiaStackWalkHelper;
+    interface IDiaFrameData;
+    interface IDiaStackWalkFrame;
+    interface IDiaEnumStackFrames;
+
+    typedef enum {
+        SymTagNull = 0,
+        SymTagExe = 1,
+        SymTagCompiland = 2,
+        SymTagCompilandDetails = 3,
+        SymTagCompilandEnv = 4,
+        SymTagFunction = 5,
+        SymTagBlock = 6,
+        SymTagData = 7,
+        SymTagAnnotation = 8,
+        SymTagLabel = 9,
+        SymTagPublicSymbol = 10,
+        SymTagUDT = 11,
+        //SymTagEnum = 12,
+        SymTagFunctionType = 13,
+        SymTagPointerType = 14,
+        SymTagArrayType = 15,
+        SymTagBaseType = 16,
+        SymTagTypedef = 17,
+        SymTagBaseClass = 18,
+        SymTagFriend = 19,
+        SymTagFunctionArgType = 20,
+        SymTagFuncDebugStart = 21,
+        SymTagFuncDebugEnd = 22,
+        SymTagUsingNamespace = 23,
+        SymTagVTableShape = 24,
+        SymTagVTable = 25,
+        SymTagCustom = 26,
+        SymTagThunk = 27,
+        SymTagCustomType = 28,
+        SymTagManagedType = 29,
+        SymTagDimension = 30,
+        SymTagMax = 31
+    } SymTagEnum;
+
+    typedef enum {
+        CV_CFL_8080 = 0,
+        CV_CFL_8086 = 1,
+        CV_CFL_80286 = 2,
+        CV_CFL_80386 = 3,
+        CV_CFL_80486 = 4,
+        CV_CFL_PENTIUM = 5,
+        CV_CFL_PENTIUMII = 6,
+        CV_CFL_PENTIUMPRO = 6,
+        CV_CFL_PENTIUMIII = 7,
+        CV_CFL_MIPS = 16,
+        CV_CFL_MIPSR4000 = 16,
+        CV_CFL_MIPS16 = 17,
+        CV_CFL_MIPS32 = 18,
+        CV_CFL_MIPS64 = 19,
+        CV_CFL_MIPSI = 20,
+        CV_CFL_MIPSII = 21,
+        CV_CFL_MIPSIII = 22,
+        CV_CFL_MIPSIV = 23,
+        CV_CFL_MIPSV = 24,
+        CV_CFL_M68000 = 32,
+        CV_CFL_M68010 = 33,
+        CV_CFL_M68020 = 34,
+        CV_CFL_M68030 = 35,
+        CV_CFL_M68040 = 36,
+        CV_CFL_ALPHA = 48,
+        CV_CFL_ALPHA_21064 = 48,
+        CV_CFL_ALPHA_21164 = 49,
+        CV_CFL_ALPHA_21164A = 50,
+        CV_CFL_ALPHA_21264 = 51,
+        CV_CFL_ALPHA_21364 = 52,
+        CV_CFL_PPC601 = 64,
+        CV_CFL_PPC603 = 65,
+        CV_CFL_PPC604 = 66,
+        CV_CFL_PPC620 = 67,
+        CV_CFL_PPCFP = 68,
+        CV_CFL_PPCBE = 69,
+        CV_CFL_SH3 = 80,
+        CV_CFL_SH3E = 81,
+        CV_CFL_SH3DSP = 82,
+        CV_CFL_SH4 = 83,
+        CV_CFL_SHMEDIA = 84,
+        CV_CFL_ARM3 = 96,
+        CV_CFL_ARM4 = 97,
+        CV_CFL_ARM4T = 98,
+        CV_CFL_ARM5 = 99,
+        CV_CFL_ARM5T = 100,
+        CV_CFL_ARM6 = 101,
+        CV_CFL_ARM_XMAC = 102,
+        CV_CFL_ARM_WMMX = 103,
+        CV_CFL_OMNI = 112,
+        CV_CFL_IA64 = 128,
+        CV_CFL_IA64_1 = 128,
+        CV_CFL_IA64_2 = 129,
+        CV_CFL_CEE = 144,
+        CV_CFL_AM33 = 160,
+        CV_CFL_M32R = 176,
+        CV_CFL_TRICORE = 192,
+        CV_CFL_X64 = 208,
+        CV_CFL_AMD64 = 208,
+        CV_CFL_EBC = 224,
+        CV_CFL_THUMB = 240
+    } CV_CPU_TYPE_e;
+
+    typedef enum {
+        MemTypeCode = 0,
+        MemTypeData = 1,
+        MemTypeStack = 2,
+        MemTypeAny = 0xffffffff
+    } MemoryTypeEnum;
+
+    [
+      uuid(4C41678E-887B-4365-A09E-925D28DB33C2),
+      helpstring("DiaSource Class")
+    ]
+    coclass DiaSource {
+        [default] interface IDiaDataSource;
+    };
+
+    [
+      odl,
+      uuid(79F1BB5F-B66E-48E5-B6A9-1545C323CA3D),
+      helpstring("IDiaDataSource Interface")
+    ]
+    interface IDiaDataSource : IUnknown {
+        [propget, helpstring("Text for last load error.")]
+        HRESULT _stdcall lastError([out, retval] BSTR* pRetVal);
+        HRESULT _stdcall loadDataFromPdb([in] LPWSTR pdbPath);
+        HRESULT _stdcall loadAndValidateDataFromPdb(
+                        [in] LPWSTR pdbPath, 
+                        [in] GUID* pcsig70, 
+                        [in] unsigned long sig, 
+                        [in] unsigned long age);
+        HRESULT _stdcall loadDataForExe(
+                        [in] LPWSTR executable, 
+                        [in] LPWSTR searchPath, 
+                        [in] IUnknown* pCallback);
+        HRESULT _stdcall loadDataFromIStream([in] IStream* pIStream);
+        HRESULT _stdcall openSession([out] IDiaSession** ppSession);
+    };
+
+    [
+      odl,
+      uuid(67138B34-79CD-4B42-B74A-A18ADBB799DF),
+      helpstring("IDiaSession Interface")
+    ]
+    interface IDiaSession : IUnknown {
+        [propget, helpstring("Dll/Exe load address.")]
+        HRESULT _stdcall loadAddress([out, retval] uint64* pRetVal);
+        [propput, helpstring("Dll/Exe load address.")]
+        HRESULT _stdcall loadAddress([in] uint64 pRetVal);
+        [propget, helpstring("Global scope (exe) symbol.")]
+        HRESULT _stdcall globalScope([out, retval] IDiaSymbol** pRetVal);
+        HRESULT _stdcall getEnumTables([out] IDiaEnumTables** ppEnumTables);
+        HRESULT _stdcall getSymbolsByAddr([out] IDiaEnumSymbolsByAddr** ppEnumbyAddr);
+        HRESULT _stdcall findChildren(
+                        [in] IDiaSymbol* parent, 
+                        [in] SymTagEnum symTag, 
+                        [in] LPWSTR name, 
+                        [in] unsigned long compareFlags, 
+                        [out] IDiaEnumSymbols** ppResult);
+        HRESULT _stdcall findSymbolByAddr(
+                        [in] unsigned long isect, 
+                        [in] unsigned long offset, 
+                        [in] SymTagEnum symTag, 
+                        [out] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall findSymbolByRVA(
+                        [in] unsigned long rva, 
+                        [in] SymTagEnum symTag, 
+                        [out] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall findSymbolByVA(
+                        [in] uint64 va, 
+                        [in] SymTagEnum symTag, 
+                        [out] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall findSymbolByToken(
+                        [in] unsigned long token, 
+                        [in] SymTagEnum symTag, 
+                        [out] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall symsAreEquiv(
+                        [in] IDiaSymbol* symbolA, 
+                        [in] IDiaSymbol* symbolB);
+        HRESULT _stdcall symbolById(
+                        [in] unsigned long id, 
+                        [out] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall findSymbolByRVAEx(
+                        [in] unsigned long rva, 
+                        [in] SymTagEnum symTag, 
+                        [out] IDiaSymbol** ppSymbol, 
+                        [out] long* displacement);
+        HRESULT _stdcall findSymbolByVAEx(
+                        [in] uint64 va, 
+                        [in] SymTagEnum symTag, 
+                        [out] IDiaSymbol** ppSymbol, 
+                        [out] long* displacement);
+        HRESULT _stdcall findFile(
+                        [in] IDiaSymbol* pCompiland, 
+                        [in] LPWSTR name, 
+                        [in] unsigned long compareFlags, 
+                        [out] IDiaEnumSourceFiles** ppResult);
+        HRESULT _stdcall findFileById(
+                        [in] unsigned long uniqueId, 
+                        [out] IDiaSourceFile** ppResult);
+        HRESULT _stdcall findLines(
+                        [in] IDiaSymbol* compiland, 
+                        [in] IDiaSourceFile* file, 
+                        [out] IDiaEnumLineNumbers** ppResult);
+        HRESULT _stdcall findLinesByAddr(
+                        [in] unsigned long seg, 
+                        [in] unsigned long offset, 
+                        [in] unsigned long length, 
+                        [out] IDiaEnumLineNumbers** ppResult);
+        HRESULT _stdcall findLinesByRVA(
+                        [in] unsigned long rva, 
+                        [in] unsigned long length, 
+                        [out] IDiaEnumLineNumbers** ppResult);
+        HRESULT _stdcall findLinesByVA(
+                        [in] uint64 va, 
+                        [in] unsigned long length, 
+                        [out] IDiaEnumLineNumbers** ppResult);
+        HRESULT _stdcall findLinesByLinenum(
+                        [in] IDiaSymbol* compiland, 
+                        [in] IDiaSourceFile* file, 
+                        [in] unsigned long linenum, 
+                        [in] unsigned long column, 
+                        [out] IDiaEnumLineNumbers** ppResult);
+        HRESULT _stdcall findInjectedSource(
+                        [in] LPWSTR srcFile, 
+                        [out] IDiaEnumInjectedSources** ppResult);
+        HRESULT _stdcall getEnumDebugStreams([out] IDiaEnumDebugStreams** ppEnumDebugStreams);
+    };
+
+    [
+      odl,
+      uuid(CB787B2F-BD6C-4635-BA52-933126BD2DCD),
+      helpstring("IDiaSymbol Interface")
+    ]
+    interface IDiaSymbol : IUnknown {
+        [propget, helpstring("Unique symbol identifier.")]
+        HRESULT _stdcall symIndexId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Symbol kind tag.")]
+        HRESULT _stdcall symTag([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Name")]
+        HRESULT _stdcall name([out, retval] BSTR* pRetVal);
+        [propget, helpstring("Lexical parent symbol.")]
+        HRESULT _stdcall lexicalParent([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall classParent([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall type([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall dataKind([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall locationType([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall addressSection([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall addressOffset([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall relativeVirtualAddress([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualAddress([out, retval] uint64* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall registerId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall offset([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall length([out, retval] uint64* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall slot([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall volatileType([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall constType([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall unalignedType([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall access([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall libraryName([out, retval] BSTR* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall platform([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall language([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall editAndContinueEnabled([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall frontEndMajor([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall frontEndMinor([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall frontEndBuild([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall backEndMajor([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall backEndMinor([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall backEndBuild([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall sourceFileName([out, retval] BSTR* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall unused([out, retval] BSTR* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall thunkOrdinal([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall thisAdjust([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualBaseOffset([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtual([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall intro([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall pure([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall callingConvention([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall value([out, retval] VARIANT* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall baseType([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall token([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall timeStamp([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall guid([out, retval] GUID* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall symbolsFileName([out, retval] BSTR* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall reference([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall count([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall bitPosition([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall arrayIndexType([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall packed([out, retval] long* pRetVal);
+        [propget, helpstring("UDT has constructor or destructor, or func is a constructor")]
+        HRESULT _stdcall constructor([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall overloadedOperator([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall nested([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall hasNestedTypes([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall hasAssignmentOperator([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall hasCastOperator([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall scoped([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualBaseClass([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall indirectVirtualBaseClass([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualBasePointerOffset([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualTableShape([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("Lexical parent symbol.")]
+        HRESULT _stdcall lexicalParentId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall classParentId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall typeId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall arrayIndexTypeId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualTableShapeId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Symbol refers to a code address.")]
+        HRESULT _stdcall code([out, retval] long* pRetVal);
+        [propget, helpstring("Symbol refers to a function.")]
+        HRESULT _stdcall function([out, retval] long* pRetVal);
+        [propget, helpstring("Symbol refers to managed code.")]
+        HRESULT _stdcall managed([out, retval] long* pRetVal);
+        [propget, helpstring("Symbol refers to MSIL code.")]
+        HRESULT _stdcall msil([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualBaseDispIndex([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall undecoratedName([out, retval] BSTR* pRetVal);
+        [propget, helpstring("PDB file age.")]
+        HRESULT _stdcall age([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Signature.")]
+        HRESULT _stdcall signature([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Symbol is compiler generated.")]
+        HRESULT _stdcall compilerGenerated([out, retval] long* pRetVal);
+        [propget, helpstring("Symbol is address taken.")]
+        HRESULT _stdcall addressTaken([out, retval] long* pRetVal);
+        [propget, helpstring("Rank of FORTRAN multi-dimension array.")]
+        HRESULT _stdcall rank([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Lower bound of a FORTRAN array dimension.")]
+        HRESULT _stdcall lowerBound([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("Upper bound of a FORTRAN array dimension.")]
+        HRESULT _stdcall upperBound([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("Symbol Id of the lower bound of a FORTRAN array dimension.")]
+        HRESULT _stdcall lowerBoundId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Symbol Id of the upper bound of a FORTRAN array dimension.")]
+        HRESULT _stdcall upperBoundId([out, retval] unsigned long* pRetVal);
+        HRESULT _stdcall get_dataBytes(
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+        HRESULT _stdcall findChildren(
+                        [in] SymTagEnum symTag, 
+                        [in] LPWSTR name, 
+                        [in] unsigned long compareFlags, 
+                        [out] IDiaEnumSymbols** ppResult);
+        [propget, helpstring("Thunk target address section.")]
+        HRESULT _stdcall targetSection([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Thunk target address offset.")]
+        HRESULT _stdcall targetOffset([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Thunk target RVA.")]
+        HRESULT _stdcall targetRelativeVirtualAddress([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Thunk target virtual address.")]
+        HRESULT _stdcall targetVirtualAddress([out, retval] uint64* pRetVal);
+        [propget, helpstring("Target machine type.")]
+        HRESULT _stdcall machineType([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Identifier of manufacturer.")]
+        HRESULT _stdcall oemId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Manufacturer defined custom symbol identifier.")]
+        HRESULT _stdcall oemSymbolId([out, retval] unsigned long* pRetVal);
+        HRESULT _stdcall get_types(
+                        [in] unsigned long cTypes, 
+                        [out] unsigned long* pcTypes, 
+                        [out] IDiaSymbol** pTypes);
+        HRESULT _stdcall get_typeIds(
+                        [in] unsigned long cTypeIds, 
+                        [out] unsigned long* pcTypeIds, 
+                        [out] unsigned long* pdwTypeIds);
+        [propget, helpstring("Type of method's object pointer.")]
+        HRESULT _stdcall objectPointerType([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("Struct, union or class.")]
+        HRESULT _stdcall udtKind([out, retval] unsigned long* pRetVal);
+        HRESULT _stdcall get_undecoratedNameEx(
+                        [in] unsigned long undecorateOptions, 
+                        [out] BSTR* name);
+        HRESULT _stdcall get_liveLVarInstances(
+                        [in] uint64 va, 
+                        [in] unsigned long cInstances, 
+                        [out] unsigned long* pcInstances, 
+                        [out] IDiaLVarInstance** instances);
+        [propget, helpstring("NoReturn")]
+        HRESULT _stdcall noReturn([out, retval] long* pRetVal);
+        [propget, helpstring("uses custom calling convention")]
+        HRESULT _stdcall customCallingConvention([out, retval] long* pRetVal);
+        [propget, helpstring("NoInline")]
+        HRESULT _stdcall noInline([out, retval] long* pRetVal);
+        [propget, helpstring("has debugging Info for optimized code")]
+        HRESULT _stdcall optimizedCodeDebugInfo([out, retval] long* pRetVal);
+        [propget, helpstring("Unreachable")]
+        HRESULT _stdcall notReached([out, retval] long* pRetVal);
+        [propget, helpstring("return from interrupt")]
+        HRESULT _stdcall interruptReturn([out, retval] long* pRetVal);
+        [propget, helpstring("far return")]
+        HRESULT _stdcall farReturn([out, retval] long* pRetVal);
+        [propget, helpstring("static function")]
+        HRESULT _stdcall isStatic([out, retval] long* pRetVal);
+        [propget, helpstring("hasDebugInfo")]
+        HRESULT _stdcall hasDebugInfo([out, retval] long* pRetVal);
+        [propget, helpstring("Compiled With LTCG")]
+        HRESULT _stdcall isLTCG([out, retval] long* pRetVal);
+        [propget, helpstring("Is it compiled with -Bzalign")]
+        HRESULT _stdcall isDataAligned([out, retval] long* pRetVal);
+        [propget, helpstring("hasSecurityChecks")]
+        HRESULT _stdcall hasSecurityChecks([out, retval] long* pRetVal);
+        [propget, helpstring("compiler name")]
+        HRESULT _stdcall compilerName([out, retval] BSTR* pRetVal);
+        [propget, helpstring("hasAlloca")]
+        HRESULT _stdcall hasAlloca([out, retval] long* pRetVal);
+        [propget, helpstring("hasSetJump")]
+        HRESULT _stdcall hasSetJump([out, retval] long* pRetVal);
+        [propget, helpstring("hasLongJump")]
+        HRESULT _stdcall hasLongJump([out, retval] long* pRetVal);
+        [propget, helpstring("hasInlineAssembly")]
+        HRESULT _stdcall hasInlAsm([out, retval] long* pRetVal);
+        [propget, helpstring("hasC++EH")]
+        HRESULT _stdcall hasEH([out, retval] long* pRetVal);
+        [propget, helpstring("hasStructuredEH")]
+        HRESULT _stdcall hasSEH([out, retval] long* pRetVal);
+        [propget, helpstring("hasAsynchronousEH")]
+        HRESULT _stdcall hasEHa([out, retval] long* pRetVal);
+        [propget, helpstring("IsNaked")]
+        HRESULT _stdcall isNaked([out, retval] long* pRetVal);
+        [propget, helpstring("isAggregated")]
+        HRESULT _stdcall isAggregated([out, retval] long* pRetVal);
+        [propget, helpstring("isSplitted")]
+        HRESULT _stdcall isSplitted([out, retval] long* pRetVal);
+        [propget, helpstring("container")]
+        HRESULT _stdcall container([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("WasSpecifiedAsInline")]
+        HRESULT _stdcall inlSpec([out, retval] long* pRetVal);
+        [propget, helpstring("BufferChecksWithoutOrdering")]
+        HRESULT _stdcall noStackOrdering([out, retval] long* pRetVal);
+        [propget, helpstring("Type of Virtual Base Offset Table")]
+        HRESULT _stdcall virtualBaseTableType([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("hasManagedCode")]
+        HRESULT _stdcall hasManagedCode([out, retval] long* pRetVal);
+        [propget, helpstring("isHotpatchable")]
+        HRESULT _stdcall isHotpatchable([out, retval] long* pRetVal);
+        [propget, helpstring("isCVTCIL")]
+        HRESULT _stdcall isCVTCIL([out, retval] long* pRetVal);
+        [propget, helpstring("isMSILNetmodule")]
+        HRESULT _stdcall isMSILNetmodule([out, retval] long* pRetVal);
+        [propget, helpstring("isCTypes")]
+        HRESULT _stdcall isCTypes([out, retval] long* pRetVal);
+        [propget, helpstring("isStripped")]
+        HRESULT _stdcall isStripped([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall frontEndQFE([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall backEndQFE([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("WasInlined")]
+        HRESULT _stdcall wasInlined([out, retval] long* pRetVal);
+        [propget, helpstring("StrictGSCheck")]
+        HRESULT _stdcall strictGSCheck([out, retval] long* pRetVal);
+        [propget, helpstring("return C++ style UDT")]
+        HRESULT _stdcall isCxxReturnUdt([out, retval] long* pRetVal);
+        [propget, helpstring("instance constructor of a class with virtual base")]
+        HRESULT _stdcall isConstructorVirtualBase([out, retval] long* pRetVal);
+    };
+
+    [
+      odl,
+      uuid(CAB72C48-443B-48F5-9B0B-42F0820AB29A),
+      helpstring("IDiaEnumSymbols Interface")
+    ]
+    interface IDiaEnumSymbols : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumSymbols.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of symbols.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the symbol for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] unsigned long index, 
+                        [out, retval] IDiaSymbol** symbol);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaSymbol** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumSymbols** ppenum);
+    };
+
+    [
+      odl,
+      uuid(0E425A73-3CED-4964-8CF0-A6CAF11BD818),
+      helpstring("IDiaLVarInstance Interface")
+    ]
+    interface IDiaLVarInstance : IUnknown {
+        [propget, helpstring("Symbols whose instance is defined")]
+        HRESULT _stdcall symbol([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring("Section addrStart")]
+        HRESULT _stdcall sectionStart([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Offset addrStart")]
+        HRESULT _stdcall offsetStart([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("RVA addrStart")]
+        HRESULT _stdcall rvaStart([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("VA addrStart")]
+        HRESULT _stdcall vaStart([out, retval] uint64* pRetVal);
+        [propget, helpstring("RVA addrEnd")]
+        HRESULT _stdcall rvaEnd([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Section addrEnd")]
+        HRESULT _stdcall sectionEnd([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Offset addrEnd")]
+        HRESULT _stdcall offsetEnd([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("VA addrEnd")]
+        HRESULT _stdcall vaEnd([out, retval] uint64* pRetVal);
+        [propget, helpstring("Program to evaluate the symbol")]
+        HRESULT _stdcall program([out, retval] BSTR* pRetVal);
+        HRESULT _stdcall get_livenessAt(
+                        [in] uint64 va, 
+                        [out] long* pfLive);
+        HRESULT _stdcall get_location(
+                        [in] IDiaStackFrame* pFrame, 
+                        [out] long* pfLocInRegister, 
+                        [out] unsigned long* pdwRegId, 
+                        [out] uint64* pva);
+    };
+
+    [
+      odl,
+      uuid(5EDBC96D-CDD6-4792-AFBE-CC89007D9610),
+      helpstring("IDiaStackFrame Interface")
+    ]
+    interface IDiaStackFrame : IUnknown {
+        [propget, helpstring("type")]
+        HRESULT _stdcall type([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Base of the stack frame")]
+        HRESULT _stdcall base([out, retval] uint64* pRetVal);
+        [propget, helpstring("size of frame in bytes")]
+        HRESULT _stdcall size([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("return address of the frame")]
+        HRESULT _stdcall returnAddress([out, retval] uint64* pRetVal);
+        [propget, helpstring("base of locals")]
+        HRESULT _stdcall localsBase([out, retval] uint64* pRetVal);
+        [propget, helpstring("cbLocals")]
+        HRESULT _stdcall lengthLocals([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("cbParams")]
+        HRESULT _stdcall lengthParams([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("cbProlog")]
+        HRESULT _stdcall lengthProlog([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("cbSavedRegs")]
+        HRESULT _stdcall lengthSavedRegisters([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("fHasSEH")]
+        HRESULT _stdcall systemExceptionHandling([out, retval] long* pRetVal);
+        [propget, helpstring("fHasEH")]
+        HRESULT _stdcall cplusplusExceptionHandling([out, retval] long* pRetVal);
+        [propget, helpstring("funcStart")]
+        HRESULT _stdcall functionStart([out, retval] long* pRetVal);
+        [propget, helpstring("fUsesBP")]
+        HRESULT _stdcall allocatesBasePointer([out, retval] long* pRetVal);
+        [propget, helpstring("maxStack")]
+        HRESULT _stdcall maxStack([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Register value.")]
+        HRESULT _stdcall registerValue(
+                        [in] unsigned long index, 
+                        [out, retval] uint64* pRetVal);
+        HRESULT _stdcall get_rawLVarInstanceValue(
+                        [in] IDiaLVarInstance* pInstance, 
+                        [in] unsigned long cbDataMax, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+        HRESULT _stdcall get_lVarInstanceLocation(
+                        [in] IDiaLVarInstance* pInstance, 
+                        [out] long* pfLocInRegister, 
+                        [out] unsigned long* pdwRegId, 
+                        [out] uint64* pva);
+    };
+
+    [
+      odl,
+      uuid(C65C2B0A-1150-4D7A-AFCC-E05BF3DEE81E),
+      helpstring("IDiaEnumTables Interface")
+    ]
+    interface IDiaEnumTables : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumTables.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of tables.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the table for the given index or name.")]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] IDiaTable** table);
+        HRESULT _stdcall Next(
+                        unsigned long celt, 
+                        IDiaTable** rgelt, 
+                        unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumTables** ppenum);
+    };
+
+    [
+      odl,
+      uuid(4A59FB77-ABAC-469B-A30B-9ECC85BFEF14),
+      helpstring("IDiaTable Interface")
+    ]
+    interface IDiaTable : IEnumUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaTable.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Table name.")]
+        HRESULT _stdcall name([out, retval] BSTR* pRetVal);
+        [propget, helpstring("Number of table entries.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the table element for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] unsigned long index, 
+                        [out, retval] IUnknown** element);
+    };
+/*
+    [
+      odl,
+      uuid(00000100-0000-0000-C000-000000000046)
+    ]
+    interface IEnumUnknown : IUnknown {
+        HRESULT _stdcall RemoteNext(
+                        [in] unsigned long celt, 
+                        [out] IUnknown** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IEnumUnknown** ppenum);
+    };
+*/
+    [
+      odl,
+      uuid(624B7D9C-24EA-4421-9D06-3B577471C1FA),
+      helpstring("IDiaEnumSymbolsByAddr Interface")
+    ]
+    interface IDiaEnumSymbolsByAddr : IUnknown {
+        [helpstring("Return the symbol for the given address.")]
+        HRESULT _stdcall symbolByAddr(
+                        [in] unsigned long isect, 
+                        [in] unsigned long offset, 
+                        [out, retval] IDiaSymbol** ppSymbol);
+        [helpstring("Return the symbol for the given relative virtual address.")]
+        HRESULT _stdcall symbolByRVA(
+                        [in] unsigned long relativeVirtualAddress, 
+                        [out, retval] IDiaSymbol** ppSymbol);
+        [helpstring("Return the symbol for the given virtual address.")]
+        HRESULT _stdcall symbolByVA(
+                        [in] uint64 virtualAddress, 
+                        [out, retval] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaSymbol** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Prev(
+                        [in] unsigned long celt, 
+                        [out] IDiaSymbol** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Clone([out] IDiaEnumSymbolsByAddr** ppenum);
+    };
+
+    [
+      odl,
+      uuid(10F3DBD9-664F-4469-B808-9471C7A50538),
+      helpstring("IDiaEnumSourceFiles Interface")
+    ]
+    interface IDiaEnumSourceFiles : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumSourceFiles.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of source files.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the source file for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] unsigned long index, 
+                        [out, retval] IDiaSourceFile** sourceFile);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaSourceFile** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumSourceFiles** ppenum);
+    };
+
+    [
+      odl,
+      uuid(A2EF5353-F5A8-4EB3-90D2-CB526ACB3CDD),
+      helpstring("IDiaSourceFile Interface")
+    ]
+    interface IDiaSourceFile : IUnknown {
+        [propget, helpstring("Unique id for the source file (in this data store).")]
+        HRESULT _stdcall uniqueId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall fileName([out, retval] BSTR* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall checksumType([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall compilands([out, retval] IDiaEnumSymbols** pRetVal);
+        HRESULT _stdcall get_checksum(
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+    };
+
+    [
+      odl,
+      uuid(FE30E878-54AC-44F1-81BA-39DE940F6052),
+      helpstring("IDiaEnumLineNumbers Interface")
+    ]
+    interface IDiaEnumLineNumbers : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumLineNumbers.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of line numbers.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the line number for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] unsigned long index, 
+                        [out, retval] IDiaLineNumber** lineNumber);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaLineNumber** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumLineNumbers** ppenum);
+    };
+
+    [
+      odl,
+      uuid(B388EB14-BE4D-421D-A8A1-6CF7AB057086),
+      helpstring("IDiaLineNumber Interface")
+    ]
+    interface IDiaLineNumber : IUnknown {
+        [propget, helpstring(".")]
+        HRESULT _stdcall compiland([out, retval] IDiaSymbol** pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall sourceFile([out, retval] IDiaSourceFile** pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lineNumber([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lineNumberEnd([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall columnNumber([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall columnNumberEnd([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall addressSection([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall addressOffset([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall relativeVirtualAddress([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualAddress([out, retval] uint64* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall length([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall sourceFileId([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall statement([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall compilandId([out, retval] unsigned long* pRetVal);
+    };
+
+    [
+      odl,
+      uuid(D5612573-6925-4468-8883-98CDEC8C384A),
+      helpstring("IDiaEnumInjectedSources Interface")
+    ]
+    interface IDiaEnumInjectedSources : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumInjectedSources.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of injected source files.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the injected source for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] unsigned long index, 
+                        [out, retval] IDiaInjectedSource** injectedSource);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaInjectedSource** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumInjectedSources** ppenum);
+    };
+
+    [
+      odl,
+      uuid(AE605CDC-8105-4A23-B710-3259F1E26112),
+      helpstring("IDiaInjectedSource Interface")
+    ]
+    interface IDiaInjectedSource : IUnknown {
+        [propget, helpstring("CRC of source bytes.")]
+        HRESULT _stdcall crc([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Length of source in bytes.")]
+        HRESULT _stdcall length([out, retval] uint64* pRetVal);
+        [propget, helpstring("Source filename.")]
+        HRESULT _stdcall fileName([out, retval] BSTR* pRetVal);
+        [propget, helpstring("Object filename.")]
+        HRESULT _stdcall objectFilename([out, retval] BSTR* pRetVal);
+        [propget, helpstring("Virtual filename.")]
+        HRESULT _stdcall virtualFilename([out, retval] BSTR* pRetVal);
+        [propget, helpstring("Source compression algorithm.")]
+        HRESULT _stdcall sourceCompression([out, retval] unsigned long* pRetVal);
+        HRESULT _stdcall get_source(
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+    };
+
+    [
+      odl,
+      uuid(08CBB41E-47A6-4F87-92F1-1C9C87CED044),
+      helpstring("IDiaEnumDebugStreams Interface")
+    ]
+    interface IDiaEnumDebugStreams : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumDebugStreams.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of streams.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [helpstring("Return the stream for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] VARIANT index, 
+                        [out, retval] IDiaEnumDebugStreamData** stream);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaEnumDebugStreamData** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumDebugStreams** ppenum);
+    };
+
+    [
+      odl,
+      uuid(486943E8-D187-4A6B-A3C4-291259FFF60D),
+      helpstring("IDiaEnumDebugStreamData Interface")
+    ]
+    interface IDiaEnumDebugStreamData : IUnknown {
+        [propget, helpstring("IEnumVARIANT version of IDiaEnumDebugStreamData.")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** pRetVal);
+        [propget, helpstring("Number of elements in the stream.")]
+        HRESULT _stdcall count([out, retval] long* pRetVal);
+        [propget, helpstring("Stream name.")]
+        HRESULT _stdcall name([out, retval] BSTR* pRetVal);
+        [helpstring("Return the element for the given index.")]
+        HRESULT _stdcall Item(
+                        [in] unsigned long index, 
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Skip([in] unsigned long celt);
+        HRESULT _stdcall Reset();
+        HRESULT _stdcall Clone([out] IDiaEnumDebugStreamData** ppenum);
+    };
+
+    [
+      uuid(FF5FAFD8-CBCB-4EF9-ADC0-45A62B681E96),
+      helpstring("Local Heap DiaSource Class")
+    ]
+    coclass DiaSourceAlt {
+        [default] interface IDiaDataSource;
+    };
+
+    [
+      uuid(8557EAC0-2A06-4E08-A6D8-ABBA2AF173E1),
+      helpstring("General Stackwalk Class")
+    ]
+    coclass DiaStackWalker {
+        [default] interface IDiaStackWalker;
+    };
+
+    [
+      odl,
+      uuid(5485216B-A54C-469F-9670-52B24D5229BB),
+      helpstring("IDiaStackWalker Interface")
+    ]
+    interface IDiaStackWalker : IUnknown {
+        HRESULT _stdcall getEnumFrames(
+                        [in] IDiaStackWalkHelper* pHelper, 
+                        [out] IDiaEnumStackFrames** ppenum);
+        HRESULT _stdcall getEnumFrames2(
+                        [in] CV_CPU_TYPE_e cpuid, 
+                        [in] IDiaStackWalkHelper* pHelper, 
+                        [out] IDiaEnumStackFrames** ppenum);
+    };
+
+    [
+      odl,
+      uuid(FEB0155D-35A8-42D4-8328-BF458F429A3A),
+      helpstring("IDiaStackWalkHelper Interface")
+    ]
+    interface IDiaStackWalkHelper : IUnknown {
+        [propget, helpstring("Register value.")]
+        HRESULT _stdcall registerValue(
+                        [in] unsigned long index, 
+                        [out, retval] uint64* pRetVal);
+        [propput, helpstring("Register value.")]
+        HRESULT _stdcall registerValue(
+                        [in] unsigned long index, 
+                        [in] uint64 pRetVal);
+        HRESULT _stdcall readMemory(
+                        [in] MemoryTypeEnum type, 
+                        [in] uint64 va, 
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+        HRESULT _stdcall searchForReturnAddress(
+                        [in] IDiaFrameData* frame, 
+                        [out] uint64* returnAddress);
+        HRESULT _stdcall searchForReturnAddressStart(
+                        [in] IDiaFrameData* frame, 
+                        [in] uint64 startAddress, 
+                        [out] uint64* returnAddress);
+        HRESULT _stdcall frameForVA(
+                        [in] uint64 va, 
+                        [out] IDiaFrameData** ppFrame);
+        HRESULT _stdcall symbolForVA(
+                        [in] uint64 va, 
+                        [out] IDiaSymbol** ppSymbol);
+        HRESULT _stdcall pdataForVA(
+                        [in] uint64 va, 
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+        HRESULT _stdcall imageForVA(
+                        [in] uint64 vaContext, 
+                        [out] uint64* pvaImageStart);
+    };
+
+    [
+      odl,
+      uuid(A39184B7-6A36-42DE-8EEC-7DF9F3F59F33),
+      helpstring("IDiaFrameData Interface")
+    ]
+    interface IDiaFrameData : IUnknown {
+        [propget, helpstring(".")]
+        HRESULT _stdcall addressSection([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall addressOffset([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall relativeVirtualAddress([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall virtualAddress([out, retval] uint64* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lengthBlock([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lengthLocals([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lengthParams([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall maxStack([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lengthProlog([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall lengthSavedRegisters([out, retval] unsigned long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall program([out, retval] BSTR* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall systemExceptionHandling([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall cplusplusExceptionHandling([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall functionStart([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall allocatesBasePointer([out, retval] long* pRetVal);
+        [propget, helpstring(".")]
+        HRESULT _stdcall type([out, retval] unsigned long* pRetVal);
+        [propget, helpstring("Frame data for enclosing function.")]
+        HRESULT _stdcall functionParent([out, retval] IDiaFrameData** pRetVal);
+        HRESULT _stdcall execute(IDiaStackWalkFrame* frame);
+    };
+
+    [
+      odl,
+      uuid(97F0F1A6-E04E-4EA4-B4F9-B0D0E8D90F5D),
+      helpstring("IDiaStackWalkFrame Interface")
+    ]
+    interface IDiaStackWalkFrame : IUnknown {
+        [propget, helpstring("Register value.")]
+        HRESULT _stdcall registerValue(
+                        [in] unsigned long index, 
+                        [out, retval] uint64* pRetVal);
+        [propput, helpstring("Register value.")]
+        HRESULT _stdcall registerValue(
+                        [in] unsigned long index, 
+                        [in] uint64 pRetVal);
+        HRESULT _stdcall readMemory(
+                        [in] uint64 va, 
+                        [in] unsigned long cbData, 
+                        [out] unsigned long* pcbData, 
+                        [out] unsigned char* pbData);
+        HRESULT _stdcall searchForReturnAddress(
+                        [in] IDiaFrameData* frame, 
+                        [out] uint64* returnAddress);
+        HRESULT _stdcall searchForReturnAddressStart(
+                        [in] IDiaFrameData* frame, 
+                        [in] uint64 startAddress, 
+                        [out] uint64* returnAddress);
+    };
+
+    [
+      odl,
+      uuid(EC9D461D-CE74-4711-A020-7D8F9A1DD255),
+      helpstring("IDiaEnumStackFrames Interface")
+    ]
+    interface IDiaEnumStackFrames : IUnknown {
+        HRESULT _stdcall Next(
+                        [in] unsigned long celt, 
+                        [out] IDiaStackFrame** rgelt, 
+                        [out] unsigned long* pceltFetched);
+        HRESULT _stdcall Reset();
+    };
+
+};

@@ -1,6 +1,6 @@
 /*/makedef.cpp
 
-Last edit: 2013-01-01 Jochen Neubeck
+Last edit: 2013-01-05 Jochen Neubeck
 
 [The MIT license]
 
@@ -26,8 +26,9 @@ SOFTWARE.
 */
 #include "stdafx.h"
 #include <atlbase.h>
-#include <dia2.h>
-#include <cvconst.h>
+
+#include <midl/dia2_h.h>
+#include <midl/dia2_i.c>
 #include "../Common/WinStdIO.h"
 #include "../Common/TextReader.h"
 #include "../Common/ModuleDirectory.h"
@@ -122,11 +123,11 @@ int mainCRTStartup()
 		CComPtr<IDiaEnumSymbolsByAddr> pSymbolsByAddr;
 		if (argc > 2)
 		{
-			const LPCWSTR pdb = argv[2];
+			const LPWSTR pdb = argv[2];
 			CComPtr<IDiaDataSource> pIDiaDataSource;
 			if (FAILED(CoCreateInstance(
-				__uuidof(DiaSource), NULL, CLSCTX_INPROC_SERVER,
-				__uuidof(IDiaDataSource), (void **)&pIDiaDataSource)))
+				CLSID_DiaSource, NULL, CLSCTX_INPROC_SERVER,
+				IID_IDiaDataSource, (void **)&pIDiaDataSource)))
 			{
 				WriteTo<STD_ERROR_HANDLE>("Failed to create DiaSource\n");
 			}
