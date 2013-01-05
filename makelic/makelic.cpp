@@ -1,6 +1,6 @@
-/*/makedef.cpp
+/*/makelic.cpp
 
-Last edit: 2013-01-01 Jochen Neubeck
+Last edit: 2013-01-05 Jochen Neubeck
 
 [The MIT license]
 
@@ -36,7 +36,7 @@ STDAPI GetRegisteredClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
 	return CoGetClassObject(rclsid, CLSCTX_INPROC_SERVER, NULL, riid, ppv);
 }
 
-int WriteLicKey(LPCWSTR cls, LPCWSTR dll)
+int WriteLicKey(LPWSTR cls, LPCWSTR dll)
 {
 	CLSID clsid;
 	if (FAILED(CLSIDFromString(cls, &clsid)) &&
