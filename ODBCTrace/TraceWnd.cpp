@@ -115,8 +115,6 @@ BOOL CALLBACK CTraceWnd::DlgProcAbout(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 		TEXT("http://www.codeproject.com/database/ODBCTracer.asp.\n")
 		TEXT("\n")
 		TEXT("Icons taken from http://www.schworak.com.\n")
-		TEXT("\n")
-		TEXT("Project Home: http://odbctrace.sourceforge.net\n")
 	);
 	HWND hwndEdit;
 	TCHAR szVersion[40];
