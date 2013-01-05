@@ -207,7 +207,6 @@ CODBCQueryDoc *CODBCQueryDocTemplate::Connect(LPCTSTR szConnect, LPCTSTR szFileN
 	if (pDocument)
 	{
 		int response = IDCANCEL;
-		CString sUse;
 		do try
 		{
 			TCHAR szPath[MAX_PATH];
@@ -219,7 +218,7 @@ CODBCQueryDoc *CODBCQueryDocTemplate::Connect(LPCTSTR szConnect, LPCTSTR szFileN
 			pDocument->m_db.SetQueryTimeout(dwQueryTimeout);
 			if (pDocument->m_db.OpenEx(szConnect))
 			{
-				sUse = szUse;
+				CString sUse = szUse;
 				if (sUse.GetLength())
 				{
 					sUse.Insert(0, _T("USE "));
@@ -232,7 +231,6 @@ CODBCQueryDoc *CODBCQueryDocTemplate::Connect(LPCTSTR szConnect, LPCTSTR szFileN
 				static_cast<CChildFrame *>(pFrame)->OnInitialUpdate();
 			}
 		}
-		//__except (ConnectEH(GetExceptionCode(), GetExceptionInformation(), response))
 		catch (CException *e)
 		{
 			response = 0;
@@ -360,7 +358,6 @@ BOOL CODBCQueryApp::InitInstance()
 	{
 		CDatabaseEx::Initialize();
 	}
-	//__except (DeleteException(GetExceptionCode(), GetExceptionInformation()))
 	catch (CException *e)
 	{
 		// Fail silently if RDO is unavailable
