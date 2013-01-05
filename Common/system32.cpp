@@ -33,26 +33,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "StdAfx.h"
-#include <typeinfo.h>
-#include "ModuleDirectory.h"
-
-// Help linker construct the type_info vtable.
-type_info::~type_info() { }
-
-#ifdef _USE_32BIT_TIME_T
-// Help out linker with otherwise unresolved vector new & delete.
-void *operator new[](size_t size) { return operator new(size); }
-void operator delete[](void *p) { operator delete(p); }
+#if defined(_AFXDLL) && !defined(_WINDLL)
+#	define _USE_32BIT_TIME_T
+#	include <afxwin.h>
+#	include <tchar.h>
+#	include <shlwapi.h>
+#else
+#	include <windows.h>
 #endif
+
+#include <new>
+
+// Support EASTL as per <EASTL/allocator.h> line 194.
+void* operator new[](size_t size,
+	const char *, int, unsigned, const char *, int)
+{
+	return ::operator new[](size);
+}
+
+// Support EASTL as per <EASTL/allocator.h> line 195.
+void* operator new[](size_t size,
+	size_t, size_t, const char *, int, unsigned, const char *, int)
+{
+	return ::operator new[](size);
+}
 
 // Exception handling related code
 
 #pragma warning(disable:4733) // Does not apply because of /SAFESEH:NO
 
+#define CXX_FRAME_MAGIC_VC6 0x19930520
 #define CXX_FRAME_MAGIC_VC8 0x19930522
 #define CXX_EXCEPTION       0xe06d7363
-#define CXX_FRAME_MAGIC		CXX_FRAME_MAGIC_VC8
+#define CXX_FRAME_MAGIC     CXX_FRAME_MAGIC_VC8
 
 extern "C" namespace {
 
@@ -369,7 +382,7 @@ static EXCEPTION_DISPOSITION __stdcall catch_block_protector(PEXCEPTION_RECORD r
 
         if (rec->ExceptionCode == CXX_EXCEPTION &&
             rec->NumberParameters == 3 &&
-            rec->ExceptionInformation[0] == CXX_FRAME_MAGIC &&
+            (rec->ExceptionInformation[0] == CXX_FRAME_MAGIC || CXX_FRAME_MAGIC_VC6) &&
             rec->ExceptionInformation[1] == 0 &&
             rec->ExceptionInformation[2] == 0)
         {
@@ -487,7 +500,7 @@ static EXCEPTION_DISPOSITION __stdcall cxx_frame_handler(
     }
     /* C++ exception */
     else if (rec->NumberParameters == 3 &&
-             rec->ExceptionInformation[0] == CXX_FRAME_MAGIC &&
+             (rec->ExceptionInformation[0] == CXX_FRAME_MAGIC || CXX_FRAME_MAGIC_VC6) &&
              rec->ExceptionInformation[1] != 0 &&
              rec->ExceptionInformation[2] != 0)
     {
@@ -519,7 +532,7 @@ __declspec(naked) EXCEPTION_DISPOSITION __cdecl __CxxFrameHandler3(
 
 void __stdcall _CxxThrowException(ULONG_PTR pObj, ULONG_PTR pInfo)
 {
-	ULONG_PTR throwParams[] = { CXX_FRAME_MAGIC_VC8, pObj, pInfo };
+	ULONG_PTR throwParams[] = { CXX_FRAME_MAGIC, pObj, pInfo };
 	RaiseException(CXX_EXCEPTION, 1, 3, throwParams);
 }
 
@@ -570,31 +583,6 @@ $loop:	sub esp,4092
 	}
 }
 
-int _fltused = 1;
-int _afxForceEXCLUDE = 0;
-int _afxForceSTDAFX = 0;
-
-typedef void (__cdecl *_PVFV)(void);
-
-#pragma section(".CRT$XCA",long,read)
-#pragma section(".CRT$XCZ",long,read)
-
-__declspec(allocate(".CRT$XCA")) _PVFV __xc_a[] = { NULL };
-__declspec(allocate(".CRT$XCZ")) _PVFV __xc_z[] = { NULL };
-
-void __cdecl _initterm(_PVFV *, _PVFV *);
-
-static void PatchCxxThrowException()
-{
-	HMODULE hMSVCRT = GetModuleHandle(_T("MSVCRT.DLL"));
-	CModuleDirectory imp = GetModuleHandle(_T("MFC42.DLL"));
-	if (IMAGE_IMPORT_DESCRIPTOR *pIAT = imp.FindIAT("MSVCRT.DLL"))
-	{
-		FARPROC pfn = GetProcAddress(hMSVCRT, "_CxxThrowException");
-		imp.FindIATEntry(pIAT, pfn) -> Patch(_CxxThrowException);
-	}
-}
-
 void __stdcall eh_vec_ctor(void *p, unsigned int size, int count, void (__thiscall*ctor)(void *), void (__thiscall*dtor)(void *))
 {
 	while (count > 0)
@@ -616,17 +604,36 @@ void __stdcall eh_vec_dtor(void *p, unsigned int size, int count, void (__thisca
 	}
 }
 
+int _fltused = 1;
+
+// Provide startup code for MFC applications
+#if defined(_AFXDLL) && !defined(_WINDLL)
+
+int _afxForceEXCLUDE = 0;
+int _afxForceSTDAFX = 0;
+
+typedef void (__cdecl *_PVFV)(void);
+
+#pragma section(".CRT$XCA",long,read)
+#pragma section(".CRT$XCZ",long,read)
+
+__declspec(allocate(".CRT$XCA")) _PVFV __xc_a[] = { NULL };
+__declspec(allocate(".CRT$XCZ")) _PVFV __xc_z[] = { NULL };
+
+void __cdecl _initterm(_PVFV *, _PVFV *);
+
 void WinMainCRTStartup()
 {
 	int nRet = 0;
 	STARTUPINFO si;
 	si.dwFlags = 0;
 	GetStartupInfo(&si);
-	PatchCxxThrowException();
 	_initterm(__xc_a, __xc_z);
 	nRet = _tWinMain(GetModuleHandle(NULL), NULL, PathGetArgs(GetCommandLine()),
 		si.dwFlags & STARTF_USESHOWWINDOW ? si.wShowWindow : SW_SHOWDEFAULT);
 	exit(nRet);
 }
+
+#endif // defined(_AFXDLL) && !defined(_WINDLL)
 
 } // extern "C" namespace

@@ -222,13 +222,11 @@
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
 				OutputDirectory="$(SolutionDir)int\include\midl"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="1"
 				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="2"
 				AdditionalIncludeDirectories="$(SolutionDir)int\include;\dm\MFC\include;\dm\ATL\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
@@ -491,8 +489,6 @@
 						Name="VCMIDLTool"
 						GenerateTypeLibrary="false"
 						TypeLibraryName=""
-						HeaderFileName="$(InputName)_h.h"
-						ProxyFileName="$(InputName)_i.c"
 					/>
 				</FileConfiguration>
 			</File>
@@ -772,6 +768,18 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="System32|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Common\system32.h"
+				>
 			</File>
 		</Filter>
 		<File
