@@ -1,3 +1,12 @@
+#define MAJOR 1
+#define MINOR 21
+
+#define STRINGIZE_(X) #X
+#define STRINGIZE(X) STRINGIZE_(X)
+#define DECIMAL2(X) 1##X-100
+#define VERSION_STRING MAJOR.MINOR
+#define VERSION_VECTOR MAJOR,DECIMAL2(MINOR)
+
 #include "resource.h"
 
 #include "afxres.h"
@@ -76,8 +85,8 @@ BEGIN
 END
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,20,0,0
- PRODUCTVERSION 1,20,0,0
+ FILEVERSION VERSION_VECTOR
+ PRODUCTVERSION VERSION_VECTOR
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS VS_FF_DEBUG
@@ -95,14 +104,14 @@ BEGIN
             VALUE "Comments", "Distributed under version 2 of the GNU General Public License\0"
             VALUE "CompanyName", "Jochen Neubeck"
             VALUE "FileDescription", "ODBCQuery"
-            VALUE "FileVersion", "1, 15, 0, 0"
+            VALUE "FileVersion", STRINGIZE(VERSION_STRING)
             VALUE "InternalName", "ODBCQuery"
-            VALUE "LegalCopyright", "Jochen Neubeck"
+            VALUE "LegalCopyright", "© 2007-2013 Jochen Neubeck"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "ODBCQuery.exe"
             VALUE "PrivateBuild", ""
             VALUE "ProductName", "ODBCQuery"
-            VALUE "ProductVersion", "1, 15, 0, 0"
+            VALUE "ProductVersion", STRINGIZE(VERSION_STRING)
             VALUE "SpecialBuild", ""
         END
     END
