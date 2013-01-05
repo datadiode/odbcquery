@@ -1,6 +1,6 @@
 /*/DBRow.cpp
 
-Last edit: 2013-01-01 Jochen Neubeck
+Last edit: 2013-01-05 Jochen Neubeck
 
 [The MIT license]
 
@@ -350,11 +350,11 @@ CString CDBRow::Item::asString(LPCTSTR null, UINT flags) const
 		memcpy(&u, data + 1, sizeof(TIMESTAMP_STRUCT));
 		_stprintf(buffer,
 			flags & fEnquoted ?
-			_T("{ts '%04d-%02d-%02d %02d:%02d:%02d'}") :
-			_T("%04d-%02d-%02d %02d:%02d:%02d"),
+			_T("{ts '%04d-%02d-%02d %02d:%02d:%02d.%03d'}") :
+			_T("%04d-%02d-%02d %02d:%02d:%02d.%03d"),
 			(int)u.m_date.year, (int)u.m_date.month, (int)u.m_date.day,
 			(int)u.m_date.hour, (int)u.m_date.minute, (int)u.m_date.second,
-			(int)u.m_date.fraction);
+			(int)u.m_date.fraction / 1000000);
 		return buffer;
 	case SQL_LONGVARBINARY:
 	case SQL_BINARY:

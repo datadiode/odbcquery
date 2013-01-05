@@ -1166,11 +1166,20 @@ void CChildFrame::OnDBRowEditKillfocus(UINT nID)
 	case SQL_TIMESTAMP:
 		if (::GetWindowText(hwndEdit, sz, 100))
 		{
+			LPCTSTR fraction = _T("000");
+			if (LPTSTR p = StrRChr(sz, NULL, _T('.')))
+			{
+				if (StrRChr(sz, p, _T('.')) == NULL)
+				{
+					*p++ = _T('\0');
+					fraction = p;
+				}
+			}
 			COleDateTime date;
 			if (date.ParseDateTime(sz))
 			{
-				CString s = date.Format(_T("%Y-%m-%d %H:%M:%S"));
-				::SetWindowText(hwndEdit, s);
+				CString s = date.Format(_T("%Y-%m-%d %H:%M:%S."));
+				::SetWindowText(hwndEdit, s + fraction);
 				::SendMessage(hwndEdit, EM_SETMODIFY, 1, 0);
 			}
 			else

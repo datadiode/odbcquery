@@ -151,7 +151,7 @@ CListCtrl *CODBCQueryDoc::CreateListCtrl(CRecordsetEx *prs, const RECT &rect, CW
 		case SQL_DATE:
 		case SQL_TIME:
 		case SQL_TIMESTAMP:
-			nPrecision = 14;
+			nPrecision = 17;
 			break;
 		case SQL_LONGVARCHAR:
 		case SQL_WLONGVARCHAR:
@@ -449,7 +449,6 @@ void CODBCQueryDoc::OnIdle()
 			}
 		}
 	}
-	//__except (pFrame->AppendLog(GetExceptionCode(), GetExceptionInformation()))
 	catch (CException *e)
 	{
 		pFrame->AppendLog(e, MB_ICONSTOP);
