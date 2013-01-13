@@ -35,6 +35,7 @@ protected:
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnEnterIdle(UINT nWhy, CWnd* pWho);
+	afx_msg LRESULT OnMenuChar(UINT, UINT, CMenu*);
 	afx_msg void OnFileRemoveRecentItems();
 	afx_msg void OnUpdateFileRemoveRecentItems(CCmdUI* pCmdUI);
 	afx_msg void OnHelpTrace();

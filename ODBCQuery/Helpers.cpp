@@ -44,6 +44,16 @@ LPTSTR CHelpers::AllocDispinfoText(const CString &s)
 	return (LPTSTR)pszText;
 }
 
+void CHelpers::PumpMessages()
+{
+	CWinApp *pApp = AfxGetApp();
+	MSG msg;
+	while (::PeekMessage(&msg, 0, 0, 0, PM_NOREMOVE))
+	{
+		pApp->PumpMessage();
+	}
+}
+
 //////////////////////////////////////////////////////////////////////
 // CSortListCtrl
 
@@ -68,7 +78,9 @@ BOOL CSortListCtrl::Sort()
 	int i = 0;
 	while (i < n)
 	{
-		LPTSTR pszText = (LPTSTR)(LPCTSTR)CString();
+		LPTSTR pszText;
+		class CTORString : public CString { };
+		reinterpret_cast<CTORString &>(pszText).CTORString::CTORString();
 		reinterpret_cast<CString &>(pszText) = GetItemText(i, nCol);
 		reinterpret_cast<CStringData *>(pszText)[-1].nRefs = GetItemData(i);
 		SetItemData(i, reinterpret_cast<DWORD>(pszText));

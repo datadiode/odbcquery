@@ -6,6 +6,7 @@ class CHelpers
 public:
 	static BOOL Open(CFile &, LPCTSTR lpszFileName, UINT nOpenFlags);
 	static LPTSTR AllocDispinfoText(const CString &);
+	static void PumpMessages();
 private:
 	static struct rgDispinfoText
 	{

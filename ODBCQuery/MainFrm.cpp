@@ -4,6 +4,7 @@
 #include "DatabaseEx.h"
 #include "DBRow.h"
 #include "StyleDefinition.h"
+#include "Helpers.h"
 
 #include "MainFrm.h"
 
@@ -22,6 +23,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(CMainFrame)
 	ON_WM_CREATE()
 	ON_WM_ENTERIDLE()
+	ON_WM_MENUCHAR()
 	ON_COMMAND(ID_FILE_REMOVE_RECENT_ITEMS, OnFileRemoveRecentItems)
 	ON_UPDATE_COMMAND_UI(ID_FILE_REMOVE_RECENT_ITEMS, OnUpdateFileRemoveRecentItems)
 	ON_COMMAND(ID_HELP_TRACE, OnHelpTrace)
@@ -97,12 +99,7 @@ void CMainFrame::OnEnterIdle(UINT nWhy, CWnd* pWho)
 		int nID = 0;
 		while (GetKeyState(VK_RBUTTON) < 0 || GetKeyState(VK_SPACE) < 0)
 		{
-			CWinApp *pApp = AfxGetApp();
-			MSG msg;
-			while (::PeekMessage(&msg, 0, 0, 0, PM_NOREMOVE))
-			{
-				pApp->PumpMessage();
-			}
+			CHelpers::PumpMessages();
 			nID = m_nIDTracking;
 		}
 		if (nID >= 0xE010 && nID <= 0xE01F ||
@@ -120,6 +117,11 @@ void CMainFrame::OnEnterIdle(UINT nWhy, CWnd* pWho)
 			}
 		}
 	}
+}
+
+LRESULT CMainFrame::OnMenuChar(UINT uChar, UINT uType, CMenu *pMenu)
+{
+	return MAKELRESULT(-1, 2);
 }
 
 void CMainFrame::OnFileRemoveRecentItems() 
