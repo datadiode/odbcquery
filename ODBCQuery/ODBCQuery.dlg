@@ -58,11 +58,12 @@ IDR_CONTEXT MENU
     }
     POPUP "3=LvResults"
     {
-        MENUITEM "Generate SQL", 1
-        MENUITEM "Delete Rows", 2
-        MENUITEM "Text Box", 3
-        MENUITEM "Hex Box", 4
-        MENUITEM "Export to Excel", 5
+        MENUITEM "&Generate SQL", 1
+        MENUITEM "&Delete Rows", 2
+        MENUITEM "&Text Box", 3
+        MENUITEM "&Hex Box", 4
+        MENUITEM "Save to &Excel spreadsheet", 5
+        MENUITEM "Show in Excel &Viewer", 6
     }
     POPUP "4=Filter"
     {

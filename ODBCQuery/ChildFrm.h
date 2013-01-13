@@ -106,7 +106,7 @@ protected:
 	void UpdateBlob(CListCtrl *, int, int, BSTR);
 	void TextBox(CListCtrl *, int, int);
 	void HexBox(CListCtrl *, int, int);
-	void CreateExcelDocument(CListCtrl *);
+	void SaveToXLS(CListCtrl *, int);
 	void OnContextMenuTcResults(CPoint);
 	void OnContextMenuLvResults(CListCtrl *, CPoint);
 	void PopulatePage(CWnd *);

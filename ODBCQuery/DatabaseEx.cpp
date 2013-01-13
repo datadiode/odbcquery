@@ -30,14 +30,6 @@ SOFTWARE.
 #include "../Common/VersionData.h"
 #include "midl/MSRDO20_i.c"
 
-#if _MFC_VER < 0x0700
-static void AfxCheckError(HRESULT hr)
-{
-	if (FAILED(hr))
-		AfxThrowOleException(hr);
-}
-#endif
-
 static LPFNGETCLASSOBJECT rdoDllGetClassObject = 0;
 
 static STDMETHODIMP rdoCreateDispatch(REFCLSID clsid, REFIID riid, void **ppdisp)

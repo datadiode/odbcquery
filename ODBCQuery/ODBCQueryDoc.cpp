@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "resource.h"
-#include "helpers.h"
+#include "Helpers.h"
 #include "DBRow.h"
 #include "ODBCQuery.h"
 #include "ODBCQueryDoc.h"
@@ -434,7 +434,7 @@ void CODBCQueryDoc::OnIdle()
 						pWnd->RedrawWindow();
 					}
 				}
-				else if (CListCtrl *pLv = DYNAMIC_DOWNCAST(CListCtrl, pWnd))
+				else if (CListCtrl *pLv = dynamic_cast<CListCtrl *>(pWnd))
 				{
 					lvi.lParam = 0;
 					pLv->InsertItem(&lvi);

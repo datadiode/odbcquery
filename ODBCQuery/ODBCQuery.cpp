@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "resource.h"
-#include "helpers.h"
+#include "Helpers.h"
 #include "ODBCQuery.h"
 #include "CryptSession.h"
 #include "WebLinkButton.h"
@@ -209,11 +209,11 @@ CODBCQueryDoc *CODBCQueryDocTemplate::Connect(LPCTSTR szConnect, LPCTSTR szFileN
 		int response = IDCANCEL;
 		do try
 		{
-			TCHAR szPath[MAX_PATH];
-			::GetModuleFileName(0, szPath, MAX_PATH);
-			::PathRenameExtension(szPath, _T(".ini"));
-			DWORD dwLoginTimeout = GetPrivateProfileInt(_T("ODBC.Settings"), _T("LoginTimeout"), 15, szPath);
-			DWORD dwQueryTimeout = GetPrivateProfileInt(_T("ODBC.Settings"), _T("QueryTimeout"), 15, szPath);
+			TCHAR ini[MAX_PATH];
+			::GetModuleFileName(NULL, ini, _countof(ini));
+			::PathRenameExtension(ini, _T(".ini"));
+			DWORD dwLoginTimeout = GetPrivateProfileInt(_T("ODBC.Settings"), _T("LoginTimeout"), 15, ini);
+			DWORD dwQueryTimeout = GetPrivateProfileInt(_T("ODBC.Settings"), _T("QueryTimeout"), 15, ini);
 			pDocument->m_db.SetLoginTimeout(dwLoginTimeout);
 			pDocument->m_db.SetQueryTimeout(dwQueryTimeout);
 			if (pDocument->m_db.OpenEx(szConnect))
@@ -573,11 +573,10 @@ void CAboutDlg::OnWebLinkButton(UINT nIDCtl)
 {
 	if (LPCTSTR pszURL = OpenWebLinkButton())
 	{
-		HMODULE hModule = ::GetModuleHandle(0);
-		if (HRSRC hRes = FindResource(hModule, pszURL, RT_HTML))
+		if (HRSRC hRes = FindResource(NULL, pszURL, RT_HTML))
 		{
-			DWORD cbRes = SizeofResource(hModule, hRes);
-			PVOID pvRes = LoadResource(hModule, hRes);
+			DWORD cbRes = SizeofResource(NULL, hRes);
+			PVOID pvRes = LoadResource(NULL, hRes);
 			AfxMessageBox(CString((LPCSTR)pvRes, cbRes), MB_ICONINFORMATION);
 		}
 		else

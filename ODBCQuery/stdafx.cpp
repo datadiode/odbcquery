@@ -13,6 +13,7 @@
 #include <afxpriv.h>		// CRecentFileList, CSharedFile
 #include <afxtempl.h>
 #include <afxinet.h>
+
 #include <shlwapi.h>
 #include <mshtml.h>
 #include <mshtmhst.h>
@@ -34,3 +35,57 @@ typedef CString CStringA;
 #endif
 
 #include "ScintillaDocView.h"
+
+inline CRuntimeClass *GetRuntimeClass(CListCtrl *p)
+{
+	return p->CListCtrl::GetRuntimeClass();
+}
+
+template<class T>
+T mfc_dynamic_cast(CObject *pObject)
+{
+	CRuntimeClass *pRuntimeClass = GetRuntimeClass(static_cast<T>(pObject));
+	return static_cast<T>(AfxDynamicDownCast(pRuntimeClass, pObject));
+}
+
+#define dynamic_cast mfc_dynamic_cast
+
+#if _MFC_VER == 0x0421
+
+inline void AfxCheckError(HRESULT hr)
+{
+	if (FAILED(hr))
+		AfxThrowOleException(hr);
+}
+
+namespace MFCX
+{
+	class CHeaderCtrl : public ::CHeaderCtrl
+	{
+	public:
+		int HitTest(HDHITTESTINFO *phdhti)
+		{
+			return SendMessage(HDM_HITTEST, 0, reinterpret_cast<LPARAM>(phdhti));
+		}
+	};
+
+	class CListCtrl : public ::CListCtrl
+	{
+	public:
+		CHeaderCtrl *GetHeaderCtrl()
+		{
+			using ::SendMessage;
+			return static_cast<CHeaderCtrl *>(FromHandle(ListView_GetHeader(m_hWnd)));
+		}
+		int SubItemHitTest(LVHITTESTINFO *plvhti)
+		{
+			using ::SendMessage;
+			return ListView_SubItemHitTest(m_hWnd, plvhti);
+		}
+	};
+}
+
+#define CHeaderCtrl MFCX::CHeaderCtrl
+#define CListCtrl MFCX::CListCtrl
+
+#endif // _MFC_VER == 0x0421

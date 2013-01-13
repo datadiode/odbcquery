@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "resource.h"
-#include "helpers.h"
+#include "Helpers.h"
 #include "DBRow.h"
 #include "DatabaseEx.h"
 #include "DBInfo.h"
@@ -1085,7 +1085,7 @@ void CChildFrame::OnDBRowEditSetfocus(UINT nID)
 {
 	HWND hwndEdit = (HWND)GetCurrentMessage()->lParam;
 	HWND hLv = ::GetParent(hwndEdit);
-	CListCtrl *pLv = DYNAMIC_DOWNCAST(CListCtrl, CWnd::FromHandlePermanent(hLv));
+	CListCtrl *pLv = dynamic_cast<CListCtrl *>(CWnd::FromHandlePermanent(hLv));
 	ASSERT(pLv);
 	CODBCFieldInfo *rgODBCFieldInfos = (CODBCFieldInfo *)::GetWindowLong(pLv->m_hWnd, GWL_USERDATA);
 	int iRow = pLv->GetNextItem(-1, LVNI_FOCUSED);
@@ -1122,7 +1122,7 @@ void CChildFrame::OnDBRowEditKillfocus(UINT nID)
 {
 	HWND hwndEdit = (HWND)GetCurrentMessage()->lParam;
 	HWND hLv = ::GetParent(hwndEdit);
-	CListCtrl *pLv = DYNAMIC_DOWNCAST(CListCtrl, CWnd::FromHandlePermanent(hLv));
+	CListCtrl *pLv = dynamic_cast<CListCtrl *>(CWnd::FromHandlePermanent(hLv));
 	ASSERT(pLv);
 	if (::SendMessage(hwndEdit, EM_GETMODIFY, 0, 0) == 0)
 		return;
@@ -1859,15 +1859,13 @@ static void NTAPI CreateOnePageItems(CMenu *pMenu, UINT uCount)
 
 void CChildFrame::OnContextMenuLvTables(CPoint point)
 {
-	//CHeaderCtrl *pHd = m_LvTables.GetHeaderCtrl();
-	CHeaderCtrl *pHd = static_cast<CHeaderCtrl *>(CWnd::FromHandle(
-		reinterpret_cast<HWND>(m_LvTables.SendMessage(LVM_GETHEADER))));
+	CHeaderCtrl *pHd = m_LvTables.GetHeaderCtrl();
 	HDHITTESTINFO ht;
 	ht.pt = point;
 	pHd->ScreenToClient(&ht.pt);
 	BOOL bEffective = FALSE;
 	UINT uCount = 0;
-	switch (pHd->SendMessage(HDM_HITTEST, 0, (LPARAM)&ht))
+	switch (pHd->HitTest(&ht))
 	{
 	case 1:
 		bEffective = TrackPopupMenu(m_rgOwnerTables, point);
@@ -1957,15 +1955,13 @@ void CChildFrame::OnContextMenuLvTables(CPoint point)
 
 void CChildFrame::OnContextMenuLvProcedures(CPoint point)
 {
-	//CHeaderCtrl *pHd = m_LvProcedures.GetHeaderCtrl();
-	CHeaderCtrl *pHd = static_cast<CHeaderCtrl *>(CWnd::FromHandle(
-		reinterpret_cast<HWND>(m_LvProcedures.SendMessage(LVM_GETHEADER))));
+	CHeaderCtrl *pHd = m_LvProcedures.GetHeaderCtrl();
 	HDHITTESTINFO ht;
 	ht.pt = point;
 	pHd->ScreenToClient(&ht.pt);
 	BOOL bEffective = FALSE;
 	UINT uCount = 0;
-	switch (pHd->SendMessage(HDM_HITTEST, 0, (LPARAM)&ht))
+	switch (pHd->HitTest(&ht))
 	{
 	case 1:
 		bEffective = TrackPopupMenu(m_rgOwnerProcedures, point);
@@ -2203,7 +2199,7 @@ void CChildFrame::OnContextMenuTcResults(CPoint point)
 	switch (pWnd->GetDlgCtrlID())
 	{
 	case 2000: // Table contents
-		if (CListCtrl *pLv = DYNAMIC_DOWNCAST(CListCtrl, pWnd))
+		if (CListCtrl *pLv = dynamic_cast<CListCtrl *>(pWnd))
 		{
 			CMenu *pMenu = GetDocTemplate()->m_menuContext.GetSubMenu(4);
 			pMenu->CheckMenuItem(1, tci.iImage == 1 ? MF_CHECKED : MF_UNCHECKED);
@@ -2220,22 +2216,56 @@ void CChildFrame::OnContextMenuTcResults(CPoint point)
 	}
 }
 
-void CChildFrame::CreateExcelDocument(CListCtrl *pLv)
+void CChildFrame::SaveToXLS(CListCtrl *pLv, int nShowViewer)
 {
 	CDatabaseEx *const pdb = GetDatabase();
 	CString sQualifiedName, sTable;
 	pLv->GetWindowText(sQualifiedName);
 	pdb->ExtractTableName(sTable, sQualifiedName);
-	CFileDialog dlg(FALSE, _T("xls"), sTable,
-		OFN_OVERWRITEPROMPT,
-		_T("XLS Files (*.xls)|*.xls|")
-		_T("All Files (*.*)|*.*|")
-		_T("|"));
-	if (dlg.DoModal() == IDOK)
+	CString path;
+	if (nShowViewer != SW_HIDE)
 	{
-		CFile f(dlg.GetPathName(), CFile::modeWrite | CFile::modeCreate);
-		BIFF_WriteReport(pLv, &f);
+		TCHAR tmp[MAX_PATH];
+		GetTempPath(_countof(tmp), tmp);
+		PathAppend(tmp, _T("xlview[ODBCQuery].xls"));
+		path = tmp;
 	}
+	else
+	{
+		CFileDialog dlg(FALSE, _T("xls"), sTable,
+			OFN_OVERWRITEPROMPT,
+			_T("XLS Files (*.xls)|*.xls|")
+			_T("All Files (*.*)|*.*|")
+			_T("|"));
+		if (dlg.DoModal() != IDOK)
+			return;
+		path = dlg.GetPathName();
+	}
+	CComBSTR bstrPath;
+	bstrPath.Attach(path.AllocSysString());
+	CExcelExport exp;
+	if (exp.Open(bstrPath))
+	{
+		if (!sTable.IsEmpty())
+			exp.sSheetName = sTable;
+		// Set up some reasonable defaults
+		exp.fPrintGrid = true;
+		exp.sHeader = _T("&L<left> ~ <right>&RPage &P of &N");
+		exp.sFooter = _T("&LODBCQuery&R&D &T");
+		// Default to Excel Viewer 2003
+		exp.sViewer = _T("ExcelViewer.Sheet.8");
+		exp.nShowViewer = SW_MAXIMIZE;
+		// Load custom settings from ini file
+		TCHAR ini[MAX_PATH];
+		::GetModuleFileName(NULL, ini, _countof(ini));
+		::PathRenameExtension(ini, _T(".ini"));
+		exp.ApplyProfile(_T("ExcelExport"), ini, true);
+		// Write the workbook
+		exp.WriteWorkbook(pLv);
+		// Close the file, and optionally launch Excel Viewer
+		exp.Close(nShowViewer);
+	}
+	AfxCheckError(exp);
 }
 
 void CChildFrame::OnContextMenuLvResults(CListCtrl *pLv, CPoint point)
@@ -2243,14 +2273,16 @@ void CChildFrame::OnContextMenuLvResults(CListCtrl *pLv, CPoint point)
 	LVHITTESTINFO hittest;
 	hittest.pt = point;
 	pLv->ScreenToClient(&hittest.pt);
-	//pLv->SubItemHitTest(&hittest);
-	pLv->SendMessage(LVM_SUBITEMHITTEST, 0, reinterpret_cast<LPARAM>(&hittest));
+	pLv->SubItemHitTest(&hittest);
 	hittest.iItem = pLv->GetNextItem(-1, LVNI_FOCUSED);
 	CMenu *pMenu = GetDocTemplate()->m_menuContext.GetSubMenu(3);
 	UINT enable = hittest.iItem != -1 &&
 		pLv->GetItemData(hittest.iItem) != 0 &&
 		hittest.iSubItem != -1 ? MF_ENABLED : MF_GRAYED;
 	pMenu->EnableMenuItem(3, enable);
+	enable = pLv->GetDlgCtrlID() == 2000 ? MF_ENABLED : MF_GRAYED;
+	pMenu->EnableMenuItem(1, enable);
+	pMenu->EnableMenuItem(2, enable);
 	int response = pMenu->TrackPopupMenu(TPM_RETURNCMD | TPM_NONOTIFY, point.x, point.y, this);
 	switch (response)
 	{
@@ -2267,7 +2299,10 @@ void CChildFrame::OnContextMenuLvResults(CListCtrl *pLv, CPoint point)
 		HexBox(pLv, hittest.iItem, hittest.iSubItem);
 		break;
 	case 5:
-		CreateExcelDocument(pLv);
+		SaveToXLS(pLv, SW_HIDE);
+		break;
+	case 6:
+		SaveToXLS(pLv, SW_SHOWNORMAL);
 		break;
 	}
 }
@@ -2295,6 +2330,7 @@ void CChildFrame::OnContextMenu(CWnd *pWnd, CPoint point)
 		OnContextMenuTcResults(point);
 		break;
 	case 2000:
+	case 2001:
 		OnContextMenuLvResults(static_cast<CListCtrl *>(pWnd), point);
 		break;
 	}
@@ -2527,12 +2563,7 @@ void CChildFrame::OnEnterIdle(UINT nWhy, CWnd* pWho)
 		int nID = 0;
 		while (GetKeyState(VK_RBUTTON) < 0 || GetKeyState(VK_SPACE) < 0)
 		{
-			CWinApp *pApp = AfxGetApp();
-			MSG msg;
-			while (::PeekMessage(&msg, 0, 0, 0, PM_NOREMOVE))
-			{
-				pApp->PumpMessage();
-			}
+			CHelpers::PumpMessages();
 			nID = m_nIDTracking;
 		}
 		UINT uState = ::GetMenuState(m_hMenuDefault, nID, MF_BYCOMMAND);
