@@ -283,9 +283,12 @@ void NTAPI CellEditor_SelectCell(HWND hWnd, int row, int col)
 				{
 					::SetWindowLong(hwndEdit, GWL_ID, col);
 					lvi.stateMask = LVIS_SELECTED;
-					lvi.state = 0;
-					SNDMSG(hWnd, LVM_SETITEMSTATE, -1, (LPARAM)&lvi);
-					ListView_SetSelectionMark(hWnd, row);
+					if (GetKeyState(VK_SHIFT) >= 0)
+					{
+						lvi.state = 0;
+						SNDMSG(hWnd, LVM_SETITEMSTATE, -1, (LPARAM)&lvi);
+						ListView_SetSelectionMark(hWnd, row);
+					}
 					lvi.state = LVIS_SELECTED;
 					SNDMSG(hWnd, LVM_SETITEMSTATE, row, (LPARAM)&lvi);
 				}
@@ -435,6 +438,7 @@ static LRESULT CALLBACK CellEditor_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 						col += Header_GetItemCount(hwndHead);
 						if (--row < 0)
 							return 0;
+						ListView_SetSelectionMark(hWnd, row);
 					}
 					CellEditor_SelectCell(hWnd, row, col);
 					return 0;
@@ -457,6 +461,7 @@ static LRESULT CALLBACK CellEditor_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 						col = 0;
 						if (++row >= ListView_GetItemCount(hWnd))
 							return 0;
+						ListView_SetSelectionMark(hWnd, row);
 					}
 					CellEditor_SelectCell(hWnd, row, col);
 					return 0;
