@@ -54,6 +54,9 @@ struct CExcelExport::BiffRecord
 		BOUNDSHEET		= 0x0085, // Sheet Information
 		PANE			= 0x0041, // Number of Panes and Their Position
 		PRINTGRIDLINES	= 0x002B, // Print Gridlines Flag
+		SUPBOOK			= 0x01AE, // Supporting Workbook
+		EXTERNSHEET		= 0x0017, // External Reference
+		NAME			= 0x0018, // Defined Name
 	};
 	WORD id;
 	WORD size;
@@ -465,6 +468,7 @@ void CExcelExport::WriteWorkbook(CListCtrl *pLv)
 			.Append<WORD>(0x20C0)
 			.WriteTo(pstm);
 	}
+
 	union
 	{
 		LARGE_INTEGER in;
@@ -474,9 +478,49 @@ void CExcelExport::WriteWorkbook(CListCtrl *pLv)
 
 	BiffRecord(BiffRecord::BOUNDSHEET)
 		// Here comes the offset of below BiffRecord::BOF
-		.Append<DWORD>(u.out.LowPart + 16 + sSheetName.GetLength())
+		.Append<DWORD>
+		(
+			u.out.LowPart
+		+	10						// BOUNDSHEET w/o sheet name
+		+	2						// Fixed size part of sheet name
+		+	sSheetName.GetLength()	// Variable size part of sheet name
+		+	8						// SUPBOOK
+		+	12						// EXTERNSHEET
+		+	31						// NAME
+		+	4						// EOF
+		)
 		.Append<WORD>(0x0000)
 		.AppendString<BYTE>(sSheetName)
+		.WriteTo(pstm);
+
+	BiffRecord(BiffRecord::SUPBOOK)
+		.Append<WORD>(0x0001)
+		.Append<WORD>(0x0401)
+		.WriteTo(pstm);
+
+	BiffRecord(BiffRecord::EXTERNSHEET)
+		.Append<WORD>(0x0001)		// Number of XTI structures that follow
+		.Append<WORD>(0x0000)		// Index (0-based) to table of SUPBOOK redcords
+		.Append<WORD>(0x0000)		// Index (0-based) to first sheet tab in the reference
+		.Append<WORD>(0x0000)		// Index (0-based) to last sheet tab in the reference
+		.WriteTo(pstm);
+
+	BiffRecord(BiffRecord::NAME)
+		.Append<WORD>(0x0020)		// Option flags (0x0020 = fBuiltin)
+		.Append<BYTE>(0x00)			// chKey
+		.Append<BYTE>(0x01)			// cch
+		.Append<WORD>(0x000B)		// cce
+		.Append<WORD>(0x0000)		// reserved3
+		.Append<WORD>(0x0001)		// itab
+		.Append<BYTE>(0x00)			// Length of the custom menu text
+		.Append<DWORD>(0x00000000)	// reserved4, reserved5, reserved6, reserved7
+		.Append<BYTE>(0x07)			// Name definition (7 = Print_Titles)
+		.Append<BYTE>(';')			// Beginning of rgce
+		.Append<WORD>(0x0000)		//
+		.Append<WORD>(0x0000)		// First row
+		.Append<WORD>(0x0000)		// Last row
+		.Append<WORD>(0x0000)		//
+		.Append<WORD>(0x00FF)		// End of rgce
 		.WriteTo(pstm);
 
 	BiffRecord(BiffRecord::EOF).WriteTo(pstm);
