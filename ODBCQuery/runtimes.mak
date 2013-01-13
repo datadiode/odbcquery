@@ -85,7 +85,7 @@ $(SolutionDir)int\include\midl\MSRDO20.lic:
 	$(SolutionDir)bin\Common\makelic {9A8831F0-A263-11D1-8DCF-00A0C90FFFC2} MSRDO20.dll > "$@"
 
 $(SolutionDir)bin\$(ConfigurationName)\ODBCQuery.html \
-$(SolutionDir)bin\$(ConfigurationName)\ODBCQuery.ini:
+$(SolutionDir)bin\$(ConfigurationName)\ODBCQuery.ini: $(@F)
 	-md $(SolutionDir)bin
 	-md $(SolutionDir)bin\$(ConfigurationName)
-	copy "%%MakeDir%%\$(@F)" "$@"
+	copy "$(@F)" "$@"
