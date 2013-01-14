@@ -64,6 +64,7 @@ IDR_CONTEXT MENU
         MENUITEM "&Hex Box", 4
         MENUITEM "Save to &Excel spreadsheet", 5
         MENUITEM "Show in Excel &Viewer", 6
+        MENUITEM "&Print with Excel Viewer", 7
     }
     POPUP "4=Filter"
     {

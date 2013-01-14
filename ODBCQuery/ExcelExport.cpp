@@ -127,7 +127,7 @@ bool CExcelExport::Open(LPCWSTR path)
 	return true;
 }
 
-void CExcelExport::Close(int nShow)
+void CExcelExport::Close(LPCTSTR lpVerb)
 {
 	LPTSTR lpFile = NULL;
 	if (pstm)
@@ -136,7 +136,7 @@ void CExcelExport::Close(int nShow)
 		pstm = NULL;
 		if (pstg)
 		{
-			if (nShow != SW_HIDE)
+			if (lpVerb != NULL)
 			{
 				STATSTG stat;
 				pstg->Stat(&stat, STATFLAG_DEFAULT);
@@ -155,9 +155,9 @@ void CExcelExport::Close(int nShow)
 		ZeroMemory(&sei, sizeof sei);
 		sei.cbSize = sizeof sei;
 		sei.fMask = SEE_MASK_CLASSNAME;
-		sei.nShow = nShowViewer ? nShowViewer : nShow;
+		sei.nShow = nShowViewer;
 		sei.lpFile = lpFile;
-		sei.lpVerb = _T("open");
+		sei.lpVerb = lpVerb;
 		sei.lpClass = sViewer;
 		ShellExecuteEx(&sei);
 		CoTaskMemFree(lpFile);

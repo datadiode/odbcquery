@@ -2216,14 +2216,14 @@ void CChildFrame::OnContextMenuTcResults(CPoint point)
 	}
 }
 
-void CChildFrame::SaveToXLS(CListCtrl *pLv, int nShowViewer)
+void CChildFrame::SaveToXLS(CListCtrl *pLv, LPCTSTR lpVerb)
 {
 	CDatabaseEx *const pdb = GetDatabase();
 	CString sQualifiedName, sTable;
 	pLv->GetWindowText(sQualifiedName);
 	pdb->ExtractTableName(sTable, sQualifiedName);
 	CString path;
-	if (nShowViewer != SW_HIDE)
+	if (lpVerb != NULL)
 	{
 		TCHAR tmp[MAX_PATH];
 		GetTempPath(_countof(tmp), tmp);
@@ -2263,7 +2263,7 @@ void CChildFrame::SaveToXLS(CListCtrl *pLv, int nShowViewer)
 		// Write the workbook
 		exp.WriteWorkbook(pLv);
 		// Close the file, and optionally launch Excel Viewer
-		exp.Close(nShowViewer);
+		exp.Close(lpVerb);
 	}
 	AfxCheckError(exp);
 }
@@ -2299,10 +2299,13 @@ void CChildFrame::OnContextMenuLvResults(CListCtrl *pLv, CPoint point)
 		HexBox(pLv, hittest.iItem, hittest.iSubItem);
 		break;
 	case 5:
-		SaveToXLS(pLv, SW_HIDE);
+		SaveToXLS(pLv, NULL);
 		break;
 	case 6:
-		SaveToXLS(pLv, SW_SHOWNORMAL);
+		SaveToXLS(pLv, _T("open"));
+		break;
+	case 7:
+		SaveToXLS(pLv, _T("print"));
 		break;
 	}
 }
