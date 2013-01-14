@@ -51,6 +51,7 @@ $(SolutionDir)bin\Debug\SciLexer.dll:
 	-md $(SolutionDir)int\scintilla\$(ConfigurationName)
 	cd $(SolutionDir)scintilla\win32
 	nmake DEBUG=1 DIR_O="$(SolutionDir)int\scintilla\$(ConfigurationName)" DIR_BIN="$(@D)" -e -f scintilla.mak "$@"
+	cd %%MAKEDIR%%
 
 $(SolutionDir)bin\Release\SciLexer.dll:
 	-md $(SolutionDir)int
@@ -58,6 +59,7 @@ $(SolutionDir)bin\Release\SciLexer.dll:
 	-md $(SolutionDir)int\scintilla\$(ConfigurationName)
 	cd $(SolutionDir)scintilla\win32
 	nmake DIR_O="$(SolutionDir)int\scintilla\$(ConfigurationName)" DIR_BIN="$(@D)" -e -f scintilla.mak "$@"
+	cd %%MAKEDIR%%
 
 $(SolutionDir)bin\System32\SciLexer.dll: \
 	$(SolutionDir)lib\MSVCRT.lib \
@@ -74,6 +76,7 @@ $(SolutionDir)bin\System32\SciLexer.dll: \
 		CXXFLAGS="-Zi -Fd$$(DIR_O)/ -TP -W4 -EHsc -Zc:forScope -Zc:wchar_t -D_CRT_SECURE_NO_DEPRECATE=1 -Deastl=std -DEASTL_STD_ITERATOR_CATEGORY_ENABLED=0 -I../include -I../src -I../lexlib -I$(SolutionDir)EASTL/include -I$(SolutionDir)EASTLINC -O1 -Oi -MD -DNDEBUG -GL -GS-" \
 		LDFLAGS="-OPT:REF -LTCG -SAFESEH:NO -NODEFAULTLIB -ENTRY:DllMain" \
 		-e -f scintilla.mak "$@"
+	cd %%MAKEDIR%%
 
 $(SolutionDir)bin\$(ConfigurationName)\ODBCTrace.dll: $(SolutionDir)bin\Common\ODBCTrace.dll
 	copy "$**" "$@"
