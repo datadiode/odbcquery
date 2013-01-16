@@ -36,9 +36,10 @@ typedef CString CStringA;
 
 #include "ScintillaDocView.h"
 
-inline CRuntimeClass *GetRuntimeClass(CListCtrl *p)
+template<class T>
+inline CRuntimeClass *GetRuntimeClass(T *pObject)
 {
-	return p->CListCtrl::GetRuntimeClass();
+	return pObject->T::GetRuntimeClass();
 }
 
 template<class T>
