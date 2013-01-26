@@ -2333,7 +2333,8 @@ void CChildFrame::OnContextMenu(CWnd *pWnd, CPoint point)
 		OnContextMenuTcResults(point);
 		break;
 	case 2000:
-	case 2001:
+	case 2000 + CRecordsetEx::initial:
+	case 2000 + CRecordsetEx::initial_catalog:
 		OnContextMenuLvResults(static_cast<CListCtrl *>(pWnd), point);
 		break;
 	}
