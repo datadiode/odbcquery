@@ -293,7 +293,7 @@ BOOL CChildFrame::PreTranslateMessage(MSG *pMsg)
 		switch (pMsg->wParam)
 		{
 		case VK_TAB:
-			if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+			if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 				if (!pCtrl->GetReadOnly())
 					return CMDIChildWnd::PreTranslateMessage(pMsg);
 			break;
@@ -2474,7 +2474,7 @@ void CChildFrame::OnDropdownTb(NMHDR *pNMHDR, LRESULT *pResult)
 	switch (pParam->iItem)
 	{
 	case ID_ZOOM_IN:
-		if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+		if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		{
 			int j = pCtrl->GetZoom();
 			while (i < 20)
@@ -2490,7 +2490,7 @@ void CChildFrame::OnDropdownTb(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		break;
 	case ID_ZOOM_OUT:
-		if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+		if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		{
 			int j = pCtrl->GetZoom();
 			while (i > -10)
@@ -2514,7 +2514,7 @@ BOOL CChildFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 	{
 	case ID_ZOOM_IN:
 	case ID_ZOOM_OUT:
-		if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+		if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		{
 			switch MAKELONG(wParam, pCtrl->GetZoom())
 			{
@@ -2609,93 +2609,101 @@ BOOL CChildFrame::OnNcActivate(BOOL bActive)
 
 void CChildFrame::OnUpdateEditCopy(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && pCtrl->GetSelectionStart() != pCtrl->GetSelectionEnd());
 }
 
 void CChildFrame::OnUpdateEditCut(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && !pCtrl->GetReadOnly() &&
 		pCtrl->GetSelectionStart() != pCtrl->GetSelectionEnd());
 }
 
 void CChildFrame::OnUpdateEditClear(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && !pCtrl->GetReadOnly() &&
 		pCtrl->GetSelectionStart() < pCtrl->GetTextLength());
 }
 
 void CChildFrame::OnUpdateEditPaste(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && pCtrl->CanPaste());
 }
 
 void CChildFrame::OnUpdateEditSelectAll(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
-	pCmdUI->Enable(pCtrl && pCtrl->GetTextLength() != 0);
+	CWnd *pWnd = GetFocus();
+	BOOL bEnable = FALSE;
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(pWnd))
+		bEnable = pCtrl->GetTextLength() != 0;
+	else if (CListCtrl *pCtrl = dynamic_cast<CListCtrl *>(pWnd))
+		bEnable = pCtrl->GetItemCount() != 0;
+	pCmdUI->Enable(bEnable);
 }
 
 void CChildFrame::OnUpdateEditUndo(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && pCtrl->CanUndo());
 }
 
 void CChildFrame::OnUpdateEditRedo(CCmdUI* pCmdUI) 
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && pCtrl->CanRedo());
 }
 
 void CChildFrame::OnEditClear() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->Clear();
 }
 
 void CChildFrame::OnEditCopy() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->Copy();
 }
 
 void CChildFrame::OnEditCut() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->Cut();
 }
 
 void CChildFrame::OnEditPaste() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->Paste();
 }
 
 void CChildFrame::OnEditSelectAll() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	CWnd *pWnd = GetFocus();
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(pWnd))
 		pCtrl->SelectAll();
+	else if (CListCtrl *pCtrl = dynamic_cast<CListCtrl *>(pWnd))
+		pCtrl->SetItemState(-1, LVIS_SELECTED, LVIS_SELECTED);
 }
 
 void CChildFrame::OnEditUndo() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->Undo();
 }
 
 void CChildFrame::OnEditRedo() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->Redo();
 }
 
 void CChildFrame::OnEditCopyHtml() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 	{
 		CStyleDefinition rgsd[STYLE_MAX + 1];
 
@@ -2716,37 +2724,37 @@ void CChildFrame::OnEditCopyHtml()
 
 void CChildFrame::OnZoomIn() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->ZoomIn();
 }
 
 void CChildFrame::OnZoomOut() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->ZoomOut();
 }
 
 void CChildFrame::OnZoomZero() 
 {
-	if (CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus()))
+	if (CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus()))
 		pCtrl->SetZoom(0);
 }
 
 void CChildFrame::OnUpdateZoom(CCmdUI *pCmdUI)
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl != 0);
 }
 
 void CChildFrame::OnUpdateZoomZero(CCmdUI *pCmdUI)
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl && pCtrl->GetZoom() != 0);
 }
 
 void CChildFrame::OnUpdateOvrIndicator(CCmdUI *pCmdUI)
 {
-	CScintillaCtrl *pCtrl = DYNAMIC_DOWNCAST(CScintillaCtrl, GetFocus());
+	CScintillaCtrl *pCtrl = dynamic_cast<CScintillaCtrl *>(GetFocus());
 	pCmdUI->Enable(pCtrl != 0 && pCtrl->GetOvertype());
 }
 
