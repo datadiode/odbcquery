@@ -107,30 +107,32 @@ int CRecordsetEx::IsPrefix(const CString &str, LPCTSTR pch)
 
 void CRecordsetEx::FixScale(const CODBCFieldInfo &fieldInfo, CString &s)
 {
-	int n = s.GetLength();
-	switch (fieldInfo.m_nSQLType)
+	if (int n = s.GetLength())
 	{
-	case SQL_NUMERIC:
-	case SQL_DECIMAL:
-	case SQL_INTEGER:
-	case SQL_SMALLINT:
-	case SQL_TINYINT:
-	case SQL_FLOAT:
-	case SQL_REAL:
-	case SQL_DOUBLE:
-		// Numeric type - pad with trailing zeros as desired
-		if (fieldInfo.m_nScale > 0)
+		switch (fieldInfo.m_nSQLType)
 		{
-			int dp = s.ReverseFind('.');
-			if (dp == -1)
-				dp = n;
-			int cch = dp + fieldInfo.m_nScale + 1;
-			LPTSTR pch = s.GetBufferSetLength(cch);
-			while (n < cch)
-				pch[n++] = '0';
-			pch[dp] = '.';
+		case SQL_NUMERIC:
+		case SQL_DECIMAL:
+		case SQL_INTEGER:
+		case SQL_SMALLINT:
+		case SQL_TINYINT:
+		case SQL_FLOAT:
+		case SQL_REAL:
+		case SQL_DOUBLE:
+			// Numeric type - pad with trailing zeros as desired
+			if (fieldInfo.m_nScale > 0)
+			{
+				int dp = s.ReverseFind('.');
+				if (dp == -1)
+					dp = n;
+				int cch = dp + fieldInfo.m_nScale + 1;
+				LPTSTR pch = s.GetBufferSetLength(cch);
+				while (n < cch)
+					pch[n++] = '0';
+				pch[dp] = '.';
+			}
+			break;
 		}
-		break;
 	}
 }
 
