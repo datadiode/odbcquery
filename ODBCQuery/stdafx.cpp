@@ -83,6 +83,14 @@ namespace MFCX
 			using ::SendMessage;
 			return ListView_SubItemHitTest(m_hWnd, plvhti);
 		}
+		BOOL SetItemState(int i, UINT data, UINT mask)
+		{
+			LVITEM lvi;
+			lvi.state = data;
+			lvi.stateMask = mask;
+			return static_cast<BOOL>(SendMessage(LVM_SETITEMSTATE,
+				static_cast<WPARAM>(i), reinterpret_cast<LPARAM>(&lvi)));
+		}
 	};
 }
 
